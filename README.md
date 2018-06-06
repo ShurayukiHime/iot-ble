@@ -1,2 +1,28 @@
-# iot-ble
-Bluetooth Low Energy vulnerability assessment - university project on IoT devices
+# Generic project outline:
+- generic ble pairing / confing from linux cmd:
+	- gattol, hcitool, hciconfig
+		- docs: 
+			- https://www.systutorials.com/docs/linux/man/1-hcitool/
+			- https://www.systutorials.com/docs/linux/man/8-hcidump/
+			- https://www.jaredwolff.com/blog/get-started-with-bluetooth-low-energy/
+			- http://joost.damad.be/2013/08/experiments-with-bluetooth-low-energy.html
+			- https://github.com/pcborenstein/bluezDoc/wiki/hcitool-and-gatttool-example
+		- useful if you have to scan the surroundings because you don't know which devices are available nor their properties
+		- it listens for advertisements, tries to connect, and if possible enumerates the services
+	- BLEAH
+		- docs: https://github.com/nu11p0inter/bleah
+		- a BLE scanner, can help in doing the aforementioned things
+- once paired, start tampering:
+	- Btlejuice:
+		- docs: https://github.com/nu11p0inter/btlejuice
+		- it is a complete framework for man in the middle attacks; includes an interceptor and a proxy to show what it intercepted.
+	- GATTacker
+		- docs: https://github.com/securing/gattacker
+		- much more powerful & complex tool for MITM & other attacks
+				
+- purpose of this project: assess security of BLE devices
+	- outcome depends on the BLE device
+		- it can simply be a proof of concept if we buy simple BLE adapters (they are not real devices, we just show that the protocol is weak)
+		- can be something more if we find wearable devices, locks, smart home appliances to test this with
+	- requires BLE protocol knowledge (at first it is not so user-friendly)
+	- those tools can also run on a raspberry pi
