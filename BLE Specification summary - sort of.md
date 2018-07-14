@@ -8,7 +8,7 @@ Optimized For...| Short burst data transmission | Continuous data streaming
 Frequency Band  | 2.4GHz ISM Band (2.402 – 2.480 GHz Utilized) | 2.4GHz ISM Band (2.402 – 2.480 GHz Utilized)
 Channels        | 40 channels with 2 MHz spacing (3 advertising channels/37 data channels) | 79 channels with 1 MHz spacing
 Channel Usage |	Frequency-Hopping Spread Spectrum (FHSS) |	Frequency-Hopping Spread Spectrum (FHSS)
-Modulation | 	GFSK | 	GFSK, π/4 DQPSK, 8DPSK
+Modulation | 	Gaussian Frequency Shift Keying (GFSK) | 	GFSK, π/4 DQPSK, 8DPSK
 Power Consumption | 	~0.01x to 0.5x of reference (depending on use case) | 1 (reference value)
 Data Rate |	LE 2M PHY: 2 Mb/s <br> LE 1M PHY: 1 Mb/s <br> LE Coded PHY (S=2): 500 Kb/s <br> LE Coded PHY (S=8): 125 Kb/s |	EDR PHY (8DPSK): 3 Mb/s <br> EDR PHY (π/4 DQPSK): 2 Mb/s <br> BR PHY (GFSK): 1 Mb/s 
 Max Tx Power* |	Class 1: 100 mW (+20 dBm) <br> Class 1.5: 10 mW (+10 dbm) <br> Class 2: 2.5 mW (+4 dBm) <br> Class 3: 1 mW (0 dBm) |	Class 1: 100 mW (+20 dBm) <br> Class 2: 2.5 mW (+4 dBm) <br> Class 3: 1 mW (0 dBm)
@@ -17,6 +17,11 @@ Network Topologies |	Point-to-Point (including piconet) <br> Broadcast <br> Mesh
 Access scheme:
 - Frequency Division Multiple Access: use 40 physical channels separated by 2MHz. 3 are used as primary advertising, 37 as secondary advertising and data channels. 
 - Time Division Multiple Access: polling scheme in which one device transmits a packet at a predetermined time, the corresponding device responds with a packet after a predetermined interval.
+
+GSFK (from WIkipedia):
+>Rather than directly modulating the frequency with the digital data symbols, "instantaneously" changing the frequency at the beginning of each symbol period, Gaussian frequency-shift keying (GFSK) filters the data pulses with a Gaussian filter to make the transitions smoother. This filter has the advantage of reducing sideband power, reducing interference with neighboring channels, at the cost of increasing intersymbol interference. It is used by DECT, Bluetooth, Cypress WirelessUSB, Nordic Semiconductor, Texas Instruments LPRF, Z-Wave and Wavenis devices. For basic data rate Bluetooth the minimum deviation is 115 kHz.
+>A GFSK modulator differs from a simple frequency-shift keying modulator in that before the baseband waveform (levels −1 and +1) goes into the FSK modulator, it is passed through a Gaussian filter to make the transitions smoother so to limit its spectral width. Gaussian filtering is a standard way for reducing spectral width; it is called "pulse shaping" in this application.
+>In ordinary non-filtered FSK, at a jump from −1 to +1 or +1 to −1, the modulated waveform changes rapidly, which introduces large out-of-band spectrum. If we change the pulse going from −1 to +1 as −1, −0.98, −0.93, …, +0.93, +0.98, +1, and we use this smoother pulse to determine the carrier frequency, the out-of-band spectrum will be reduced.
 
 ## Some terminology
 Term | Definition
@@ -74,6 +79,143 @@ Physical channel divided into time units aka *events*. Data is transmitted betwe
 Advertising events may be used to implement a unidirectional or broadcast communication.
 They may be also used to establish pair-wise bidirectional communications on data channels, or establish broadcast on secondary advertisement channels.
 
+### Header
+Thanks to [advlib](https://github.com/reelyactive/advlib).
+For reference, the 16-bit header is as follows (reading the hexadecimal string from left to right):
+
+| Bit(s) | Function                      |
+|-------:|-------------------------------|
+| 15     | RxAdd: 0 = public, 1 = random |
+| 14     | TxAdd: 0 = public, 1 = random |
+| 13-12  | Reserved for Future Use (RFU) |
+| 11-8   | Type (see table below)        |
+| 7-6    | Reserved for Future Use (RFU) |
+| 5-0    | Payload length in bytes       |
+
+And the advertising packet types are as follows:
+
+| Type | Packet           | Purpose                                |
+|-----:|------------------|----------------------------------------|
+| 0    | ADV_IND          | Connectable undirected advertising     |
+| 1    | ADV_DIRECT_IND   | Connectable directed advertising       |
+| 2    | ADV_NONCONN_IND  | Non-connectable undirected advertising |
+| 3    | SCAN_REQ         | Scan for more info from advertiser     |
+| 4    | SCAN_RSP         | Response to scan request from scanner  |
+| 5    | CONNECT_REQ      | Request to connect                     |
+| 6    | ADV_DISCOVER_IND | Scannable undirected advertising       |
+
+For example: 4216 (hex) ---> 100001000010110 (binary)
+- 15° bit: 0 = public receiver address
+- 14° bit: 1 = random sender address
+- 13° and 12° bit: 10
+- 11° to 8° bit: 0001 = 2 ---> ADV_NONCONN_IND
+- 7° and 6°: 00
+- 5° to 0°: 100001 = 22 ---> bytes length
+
+### Address
+For reference, the 48-bit header is as follows (reading the hexadecimal string from left to right):
+
+| Bit(s) | Address component |
+|-------:|-------------------|
+| 47-40  | xx:xx:xx:xx:xx:## |
+| 39-32  | xx:xx:xx:xx:##:xx |
+| 31-24  | xx:xx:xx:##:xx:xx |
+| 23-16  | xx:xx:##:xx:xx:xx |
+| 15-8   | xx:##:xx:xx:xx:xx |
+| 7-0    | ##:xx:xx:xx:xx:xx |
+
+### Data (Generic Access Profile)
+
+For reference, the structure of the data is as follows:
+
+| Byte(s)     | Data component                                        |
+|------------:|-------------------------------------------------------|
+| 0           | Length of the data in bytes (including type and data) |
+| 1           | GAP Data Type (see table below)                       |
+| 2 to length | Type-specifc data                                     |
+
+The Generic Access Profile Data Types are listed on the [Bluetooth GAP Assigned Numbers website](https://www.bluetooth.org/en-us/specification/assigned-numbers/generic-access-profile).  The following table lists the Data Types, their names and the section in this document in which they are described.
+
+| Data Type | Data Type Name                       | See advlib section |
+|----------:|--------------------------------------|--------------------|
+| 0x01      | Flags                                | Flags              |
+| 0x02      | Incomplete List of 16-bit UUIDs      | UUID               |
+| 0x03      | Complete List of 16-bit UUIDs        | UUID               |
+| 0x04      | Incomplete List of 32-bit UUIDs      | UUID               |
+| 0x05      | Complete List of 32-bit UUIDs        | UUID               |
+| 0x06      | Incomplete List of 128-bit UUIDs     | UUID               |
+| 0x07      | Complete List of 128-bit UUIDs       | UUID               |
+| 0x08      | Shortened Local Name                 | Local Name         |
+| 0x09      | Complete Local Name                  | Local Name         |
+| 0x0a      | Tx Power Level                       | Tx Power           |
+| 0x0d      | Class of Device                      | Generic Data       |
+| 0x0e      | Simple Pairing Hash C-192            | Generic Data       |
+| 0x0f      | Simple Pairing Randomizer R-192      | Generic Data       |
+| 0x10      | Security Manager TK Value            | Generic Data       |
+| 0x11      | Security Manager OOB Flags           | Generic Data       |
+| 0x12      | Slave Connection Interval Range      | SCIR               |
+| 0x14      | 16-bit Solicitation UUIDs            | Solicitation       |
+| 0x15      | 128-bit Solicitation UUIDs           | Solicitation       |
+| 0x16      | Service Data 16-bit UUID             | Service Data       |
+| 0x17      | Public Target Address                | Generic Data       |
+| 0x18      | Random Target Address                | Generic Data       |
+| 0x19      | Public Target Address                | Generic Data       |
+| 0x1a      | Advertising Interval                 | Generic Data       |
+| 0x1b      | LE Bluetooth Device Address          | Generic Data       |
+| 0x1c      | LE Bluetooth Role                    | Generic Data       |
+| 0x1d      | Simple Pairing Hash C-256            | Generic Data       |
+| 0x1e      | Simple Pairing Hash Randomizer C-256 | Generic Data       |
+| 0x1f      | 32-bit Solicitation UUIDs            | Solicitation       |
+| 0x20      | Service Data 32-bit UUID             | Service Data       |
+| 0x21      | Service Data 128-bit UUID            | Service Data       |
+| 0x22      | LE Secure Con. Confirmation Value    | Generic Data       |
+| 0x23      | LE Secure Connections Random Value   | Generic Data       |
+| 0x24      | URI                                  | Generic Data       |
+| 0x25      | Indoor Positioning                   | Generic Data       |
+| 0x26      | Transport Discovery Data             | Generic Data       |
+| 0x27      | LE Supported Features                | Generic Data       |
+| 0x28      | Channel Map Update Indication        | Generic Data       |
+| 0x29      | PB-ADV                               | Generic Data       |
+| 0x2a      | Mesh Message                         | Generic Data       |
+| 0x2b      | Mesh Beacon                          | Generic Data       |
+| 0x3d      | 3-D Information Data                 | Generic Data       |
+| 0xff      | Manufacturer Specific Data           | Mfr. Specific Data |
+
+### Use-case example
+We received a packet whose payload is this:
+<center>
+02 01 06 0b 09 47 41 50 42 75 74 74 6f 6e 00 03 03 00 aa 04 16 00 aa 09
+</center>
+Let's see how we understand its content following the above tables.
+
+- 02 01 06 
+	- first byte 02 --> decimal length 02
+	- second byte 01 = type --> see table, match with 0x01 = "**Flags**"
+	- 06 --> 00000110 binary. Meaning:
+		- 000 reserved
+		- 0 = Simultaneous LE and BR/EDR to Same Device Capable (Host): false (0x0)
+		- 0 = Simultaneous LE and BR/EDR to Same Device Capable (Controller): false (0x0)
+		- 1 = BR/EDR Not Supported: true (0x1)
+		- 1 = LE General Discoverable Mode: true (0x1)
+		- 0 = LE Limited Discoverable Mode: false (0x0)
+- 0b 09 47 41 50 42 75 74 74 6f 6e 00
+	- first byte 0b --> decimal length 11
+	- second byte 09 = type --> see table, match with 0x09 = "**Complete Local Name**"
+	- third to 12th byte --> translate to ASCII and obtain GAPButton
+		- I reckon the name is only 9 bytes long and the last byte 00 is "line ending"
+- 03 03 00 aa
+	- first byte 03 --> decimal length 03
+	- second byte 03 = type --> see table, match with 0x03 = "**Complete List of 16-bit UUIDs**"
+	-  third and 4th byte 00 aa = two bytes as expected, although to know the meaning we should look somewhere in mbed specs
+- 04 16 00 aa 09
+	- first byte 04 --> decimal length 04
+	- second byte 16 = type --> see table, match with 0x16 = "**Service Data 16-bit UUID**"
+	- third and 4th 00 aa = two bytes, although to know the meaning we should look somewhere in mbed specs (it is the UUID as before)
+	- 5th byte 09 --> decimal service data 09
+
+#### Final considerations
+You don't really know beforehand how to interpret those data. You just know it will be organized in triplets "*length-meaning-content*". The first field is fundamental because it tells you when to stop reading content, and thus when a new triplet starts.
+
 ## Connections
 - The initiator becomes the *master* and the advertiser becomes the *slave* in the piconet
 - Connection events are used to send data packets
@@ -88,7 +230,7 @@ Frequency hopping pattern is determined by a field present in the connection req
 
 ## Hierarchy of layers
 <center>
-| | Layers |
+|       | Layers |
 | ---| --- |
 Physical Layer | Physical transport
 Physical Layer | Physical channel |
@@ -163,7 +305,7 @@ Requires
 	- Now we use EC Diffie Hellman, which is resistant to passive eavesdropping attacks (a bit less against MITM, they say).
 - Data encryption
 
-No protection against passive eavesdropping in Just Works and Passive Eavesdropping association modes, because of EC Diffie Hellman (not supported by LE Legacy). If the LE device supports Secure Connections, this protection is present.
+No protection against passive eavesdropping in Just Works and Passkey Entry association modes, because of EC Diffie Hellman (not supported by LE Legacy). If the LE device supports Secure Connections, this protection is present.
 
 #### MITM Prevention 
 The Secure simple pairing offers these two methods:
@@ -254,3 +396,61 @@ A service is a collection of data and associated behaviors to accomplish a parti
 #### Characteristics
 A characteristic is a value used in a service along with properties and configuration information about how the value is accessed and information about how the value is displayed or represented. A characteristic definition contains a characteristic declaration, characteristic properties, and a value. It may also contain descriptors that describe the value or permit configuration of 
 the server with respect to the characteristic value.
+
+# Dealing with BLE
+Have patience.
+
+## Bash commands
+
+### systemctl bluetooth.service
+- systemctl start bluetooth.service
+- systemctl restart bluetooth.service
+- systemctl enable bluetooth.service
+
+They control the low-level bluetoothd demon, to start, enable and reset it. The effects of these commands may be checked via GUI as well as with the command `service bluetooth status` possibly with option `-l`.
+
+Its error codes are mostly confusing and unfathomable to understand, although if you put some effort in it you could obtain some good achievements.
+
+- If talks about something being blocked, check with `rfkill -l` to see if Bluetooth appears to be soft or hard block. In case, you may as well unblock it with `rfkill`.
+- It could say that bluetooth is up and running, while actually it isn't. In this case, check for `time out` error codes. This will be the confirmation that bluetooth is not working properly - the demon has been started but failed to activate.
+	- Confirmation can be attained via `hcitool dev` and `hciconfig -a`, which may show either no MAC address, or a completely zeroed address, or an ordinary address - in this case `hciconfig` will say that the device is down.
+
+### hcitool
+Simple command to check bluetooth status, make LE scans and connect to bluetooth devices. So simple that most of the times it doesn't work.
+- `hcitool dev` returns the device MAC address, if it is working properly.
+- `hcitool lescan` performs a LE scan for nearby devices.
+- `hcitool leinfo MAC:ADDRESS` returns general information about the selected device.
+- `hcitool lecc MAC:ADDRESS` tries to connect to a device.
+
+### hciconfig
+Similar to `hcitool` but a bit more useful.
+
+- `hciconfig -a` shows all active devices and their properties. You can obtain some more information with `hciconfig devInt0 commands` and `hciconfig devInt0 features`. It is important to pay attention to two characteristics:
+	- If the device is UP RUNNING or DOWN, and in this latter case whether it has been assigned a MAC address (most fortunate case)
+	- If you know that your device supports LE, but no information is provided about it, you should know that something is not working. In regular cases, many lines of description are returned when invoking this command, including some about LE features.
+- Device can be restarted or enabled via `hciconfig`, but this rarely works if there is a low-level problem with the bluetooth demon. Commands `hciconfig devInt0 reset` and so on.
+
+### hcidump
+Even less simple command, still more useful. Keep it in mind if you manage to get your bluetooth working fine. `hcidump` prints dumps of data exchanged between the laptop (or whatever) receiver and the mobile device. They can be either raw hex or pretty printed. They mostly correspond with what you'd find with wireshark.
+
+### gatttool ---incomplete
+
+gatttool -b D5:7A:0D:25:DE:50 -I
+
+### bluetoothctl
+It opens an interactive session with dedicated commands to manage the bluetooth agent and interact with nearby devices. The list of commands is quite comprehensive and all in all it may result easier to use than `gatttool` thanks to the added layer of abstraction.
+
+- `bluetoothctl` opens the interactive session. The agent is automatically initialized, but you can anyway ask for its initialization. Nearby devices scanning is not activated by default. 
+- `default-agent` asks for the activation of the default agent.
+- `devices` tells you the nearby devices that are advertising. A quite irritating feature is that every device is recorded in this list, also from ancient times and also if now it is not currently available, so that this list usually becomes quite long to search through.
+- `scan on` activates continuous scanning for nearby devices. It could be advisable to turn it off once you found your target device as it will keep adding new lines to your screen every time any change is received. Devices may take a while to appear here due to random advertisement timings to avoid collisions. Or just if you are unlucky. You can cross-check with the Bluetooth manager GUI or `hcitool lescan`.
+- `connect C6:F8:CE:66:73:7E` sends a request for connection. Also in this case, response may take a while to come back. Not all devices allow connection (e.g. if they do only advertisement), and some of them may ask to enter a 6-digit pin to authenticate. See above for details.
+
+## Use case with STM IoT node
+Wireshark address filter: `bthci_evt.bd_addr == c6:f8:ce:66:73:7e`
+
+We used the example ble gap button. This programs records the number of hits on the user button and sends non connectable advertising events on the main channel. Thus, the device is visible but it is impossible to connect to, as it is programmed only to perform advertising.
+It is possible to read the value written in the data field as it doesn't have any encoding and is publicly advertised. We tested and tried three different approaches:
+1) packet sniffing via CMD using `bluetoothctl` (you have to retrieve the hexdump as it automatically tries to display data, making it meaningless)
+2) packet sniffing via Wireshark
+3) packet sniffing via Android app BLE scanner (the app returns only advertising data, but it matches with wireshark)
