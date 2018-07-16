@@ -1,0 +1,13 @@
+Project Presentation Overview
+
+- BLE & BLE devices introduction;
+- Security Consideration for BLE devices; - not sure if it's better here or later in the presentation
+- Project Objective;
+- Material used (IOT nodes, smart bulb, smart band);
+- Steps of the Project:
+	- Pairing of the devices
+	- Sniffing bt traffic packets (wireshark)
+	- Tampering with write characteristics (bluetoothctl, gatttool)
+	- MITM attacks (gattacker, btlejuice)
+- Conclusions
+
