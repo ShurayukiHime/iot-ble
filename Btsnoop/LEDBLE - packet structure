@@ -1,0 +1,34 @@
+SMART BULB PACKET STRUCTURE
+
+CHANGE COLOR AND BRIGHTNESS MODE
+es: 56ff085a000faa
+
+56 ->
+ff085a -> color
+00 -> brightness (from 00 to ff)
+0f or f0 -> off or on
+aa ->
+
+STROBO LIGHT
+
+bb -> 
+3
+0 -> id for colors (0: 7 colors, 1: red, 2:green, ... , 7: light blue )  *
+1 -> time of display of color (1 is a flash, f shows color for more time)
+f -> interval of time between colors (1 faster than f)
+44 ->
+
+* 	8: changes the mode: 7 colors slow strobo
+	9: stable red light
+
+cc
+2
+3
+33 
+
+FIXED COLOR BLUE
+
+7800
+0000 -> off ; ffff -> on; dfdf -> medium --> light brightness
+00f0ee
+	

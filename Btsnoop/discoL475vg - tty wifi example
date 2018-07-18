@@ -1,0 +1,117 @@
+chiara@chiara-N56VZ:~$ cat /dev/ttyACM0
+WiFi example
+
+
+
+Scan:
+
+6 networks available.
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:9c:41 RSSI: -90 Ch: 1
+
+Network: ALMAWIFI secured: Unknown BSSID: A4:6C:2A:66:9c:40 RSSI: -90 Ch: 1
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:ba:31 RSSI: -86 Ch: 6
+
+Network: eduroam secured: Unknown BSSID: 0:F6:63:7c:63:31 RSSI: -89 Ch: 6
+
+Network: ALMAWIFI secured: Unknown BSSID: A4:6C:2A:66:ba:30 RSSI: -87 Ch: 6
+
+Network: ALMAWIFI secured: Unknown BSSID: 0:F6:63:7c:63:30 RSSI: -89 Ch: 6
+
+
+
+Connecti6 networks available.
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:9c:41 RSSI: -91 Ch: 1
+
+Network: ALMAWIFI secured: Unknown BSSID: A4:6C:2A:66:9c:40 RSSI: -91 Ch: 1
+
+Network: ALMAWIFI secured: Unknown BSSID: 0:F6:63:7c:63:30 RSSI: -86 Ch: 6
+
+Network: eduroam secured: Unknown BSSID: 0:F6:63:7c:63:31 RSSI: -86 Ch: 6
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:ba:31 RSSI: -88 Ch: 6
+
+Network: ALMAWIFI secured: Unknown BSSID: 0:3A:99:3b:d6:20 RSSI: -83 Ch: 11
+
+
+
+Connecting to Chiara...
+
+Success
+
+
+
+MAC: C4:7F:51:04:35:BE
+
+IP: 192.168.43.116
+
+Netmask: 255.255.255.0
+
+Gateway: 192.168.43.1
+
+RSSI: -34
+
+
+
+Sending HTTP request to www.arm.com...
+
+sent 37 [GET / HTTP/1.1]
+
+recv 64 [HTTP/1.1 301 Moved Permanently]
+
+
+
+Done
+
+^C
+chiara@chiara-N56VZ:~$ cat /dev/ttyACM0
+WiFi example
+
+
+
+Scan:
+
+5 networks available.
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:9c:41 RSSI: -90 Ch: 1
+
+Network: eduroam secured: Unknown BSSID: 0:F6:63:7c:63:31 RSSI: -87 Ch: 6
+
+Network: eduroam secured: Unknown BSSID: A4:6C:2A:66:ba:31 RSSI: -89 Ch: 6
+
+Network: ALMAWIFI secured: Unknown BSSID: 0:F6:63:7c:63:30 RSSI: -86 Ch: 6
+
+Network: ALMAWIFI secured: Unknown BSSID: A4:6C:2A:66:ba:30 RSSI: -90 Ch: 6
+
+
+
+Connecting to Chiara...
+
+Success
+
+
+
+MAC: C4:7F:51:04:35:BE
+
+IP: 192.168.43.116
+
+Netmask: 255.255.255.0
+
+Gateway: 192.168.43.1
+
+RSSI: -35
+
+
+
+Sending HTTP request to www.arm.com...
+
+sent 37 [GET / HTTP/1.1]
+
+recv 64 [HTTP/1.1 301 Moved Permanently]
+
+
+
+Done
+

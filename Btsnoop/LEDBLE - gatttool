@@ -1,0 +1,194 @@
+chiara@chiara-N56VZ:~$ gatttool -I
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful
+[F8:1D:78:63:3D:FA][LE]> characteristic
+Error: characteristic: command not found
+[F8:1D:78:63:3D:FA][LE]> help
+help                                           Show this help
+exit                                           Exit interactive mode
+quit                                           Exit interactive mode
+connect         [address [address type]]       Connect to a remote device
+disconnect                                     Disconnect from a remote device
+primary         [UUID]                         Primary Service Discovery
+included        [start hnd [end hnd]]          Find Included Services
+characteristics [start hnd [end hnd [UUID]]]   Characteristics Discovery
+char-desc       [start hnd] [end hnd]          Characteristics Descriptor Discovery
+char-read-hnd   <handle>                       Characteristics Value/Descriptor Read by handle
+char-read-uuid  <UUID> [start hnd] [end hnd]   Characteristics Value/Descriptor Read by UUID
+char-write-req  <handle> <new value>           Characteristic Value Write (Write Request)
+char-write-cmd  <handle> <new value>           Characteristic Value Write (No response)
+sec-level       [low | medium | high]          Set security level. Default: low
+mtu             <value>                        Exchange MTU for GATT/ATT
+[F8:1D:78:63:3D:FA][LE]> characteristics
+handle: 0x0002, char properties: 0x02, char value handle: 0x0003, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+handle: 0x0004, char properties: 0x02, char value handle: 0x0005, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+handle: 0x0006, char properties: 0x02, char value handle: 0x0007, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+handle: 0x000a, char properties: 0x0c, char value handle: 0x000b, uuid: 0000ffe9-0000-1000-8000-00805f9b34fb
+handle: 0x000d, char properties: 0x10, char value handle: 0x000e, uuid: 0000ffe4-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> primary
+attr handle: 0x0001, end grp handle: 0x0007 uuid: 00001800-0000-1000-8000-00805f9b34fb
+attr handle: 0x0008, end grp handle: 0x0008 uuid: 0000fff0-0000-1000-8000-00805f9b34fb
+attr handle: 0x0009, end grp handle: 0x000b uuid: 0000ffe5-0000-1000-8000-00805f9b34fb
+attr handle: 0x000c, end grp handle: 0xffff uuid: 0000ffe0-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> char-desc
+handle: 0x0001, uuid: 00002800-0000-1000-8000-00805f9b34fb
+handle: 0x0002, uuid: 00002803-0000-1000-8000-00805f9b34fb
+handle: 0x0003, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+handle: 0x0004, uuid: 00002803-0000-1000-8000-00805f9b34fb
+handle: 0x0005, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+handle: 0x0006, uuid: 00002803-0000-1000-8000-00805f9b34fb
+handle: 0x0007, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+handle: 0x0008, uuid: 00002800-0000-1000-8000-00805f9b34fb
+handle: 0x0009, uuid: 00002800-0000-1000-8000-00805f9b34fb
+handle: 0x000a, uuid: 00002803-0000-1000-8000-00805f9b34fb
+handle: 0x000b, uuid: 0000ffe9-0000-1000-8000-00805f9b34fb
+handle: 0x000c, uuid: 00002800-0000-1000-8000-00805f9b34fb
+handle: 0x000d, uuid: 00002803-0000-1000-8000-00805f9b34fb
+handle: 0x000e, uuid: 0000ffe4-0000-1000-8000-00805f9b34fb
+handle: 0x000f, uuid: 00002902-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000e
+Characteristic value/descriptor: 00 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0001
+Characteristic value/descriptor: 00 18 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0007
+Characteristic value/descriptor: 00 00 00 00 00 00 00 00 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0008
+Characteristic value/descriptor: f0 ff 
+[F8:1D:78:63:3D:FA][LE]> 
+[F8:1D:78:63:3D:FA][LE]> char-write-cmd 0x0008 ff ff
+[F8:1D:78:63:3D:FA][LE]> char-write-cmd 0x0008
+Usage: char-write-cmd <handle> <new value>
+[F8:1D:78:63:3D:FA][LE]> char-write-cmd 0x0008 00 00
+[F8:1D:78:63:3D:FA][LE]> char-write-cmd 0x0008 f1 ff
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000b
+Error: Characteristic value/descriptor read failed: Attribute can't be read
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0xffff
+Error: Characteristic value/descriptor read failed: Invalid handle
+[F8:1D:78:63:3D:FA][LE]> char-write-hnd 0x0008 f1 ff
+Error: char-write-hnd: command not found
+[F8:1D:78:63:3D:FA][LE]> help
+help                                           Show this help
+exit                                           Exit interactive mode
+quit                                           Exit interactive mode
+connect         [address [address type]]       Connect to a remote device
+disconnect                                     Disconnect from a remote device
+primary         [UUID]                         Primary Service Discovery
+included        [start hnd [end hnd]]          Find Included Services
+characteristics [start hnd [end hnd [UUID]]]   Characteristics Discovery
+char-desc       [start hnd] [end hnd]          Characteristics Descriptor Discovery
+char-read-hnd   <handle>                       Characteristics Value/Descriptor Read by handle
+char-read-uuid  <UUID> [start hnd] [end hnd]   Characteristics Value/Descriptor Read by UUID
+char-write-req  <handle> <new value>           Characteristic Value Write (Write Request)
+char-write-cmd  <handle> <new value>           Characteristic Value Write (No response)
+sec-level       [low | medium | high]          Set security level. Default: low
+mtu             <value>                        Exchange MTU for GATT/ATT
+
+chiara@chiara-N56VZ:~$ gatttool -I
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful
+[F8:1D:78:63:3D:FA][LE]> help
+help                                           Show this help
+exit                                           Exit interactive mode
+quit                                           Exit interactive mode
+connect         [address [address type]]       Connect to a remote device
+disconnect                                     Disconnect from a remote device
+primary         [UUID]                         Primary Service Discovery
+included        [start hnd [end hnd]]          Find Included Services
+characteristics [start hnd [end hnd [UUID]]]   Characteristics Discovery
+char-desc       [start hnd] [end hnd]          Characteristics Descriptor Discovery
+char-read-hnd   <handle>                       Characteristics Value/Descriptor Read by handle
+char-read-uuid  <UUID> [start hnd] [end hnd]   Characteristics Value/Descriptor Read by UUID
+char-write-req  <handle> <new value>           Characteristic Value Write (Write Request)
+char-write-cmd  <handle> <new value>           Characteristic Value Write (No response)
+sec-level       [low | medium | high]          Set security level. Default: low
+mtu             <value>                        Exchange MTU for GATT/ATT
+[F8:1D:78:63:3D:FA][LE]> characteristics
+handle: 0x0002, char properties: 0x02, char value handle: 0x0003, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+handle: 0x0004, char properties: 0x02, char value handle: 0x0005, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+handle: 0x0006, char properties: 0x02, char value handle: 0x0007, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+handle: 0x000a, char properties: 0x0c, char value handle: 0x000b, uuid: 0000ffe9-0000-1000-8000-00805f9b34fb
+handle: 0x000d, char properties: 0x10, char value handle: 0x000e, uuid: 0000ffe4-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x00b
+Error: Characteristic value/descriptor read failed: Attribute can't be read
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000b
+Error: Characteristic value/descriptor read failed: Attribute can't be read
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x00a
+Characteristic value/descriptor: 0c 0b 00 e9 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000a
+Characteristic value/descriptor: 0c 0b 00 e9 ff 
+[F8:1D:78:63:3D:FA][LE]> disconnect
+
+(gatttool:3749): GLib-WARNING **: Invalid file descriptor.
+
+[F8:1D:78:63:3D:FA][LE]> quit
+chiara@chiara-N56VZ:~$ gatttool -I
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000a
+Characteristic value/descriptor: 0c 0b 00 e9 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000d
+Characteristic value/descriptor: 10 0e 00 e4 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0002
+Characteristic value/descriptor: 02 03 00 00 2a 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0004
+Characteristic value/descriptor: 02 05 00 01 2a 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0006
+Characteristic value/descriptor: 02 07 00 04 2a 
+[F8:1D:78:63:3D:FA][LE]> quit
+
+(gatttool:3983): GLib-WARNING **: Invalid file descriptor.
+
+chiara@chiara-N56VZ:~$ gatttool -I
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000a
+Characteristic value/descriptor: 0c 0b 00 e9 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000d
+Characteristic value/descriptor: 10 0e 00 e4 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0002
+Characteristic value/descriptor: 02 03 00 00 2a 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0004
+Characteristic value/descriptor: 02 05 00 01 2a 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0006
+Characteristic value/descriptor: 02 07 00 04 2a 
+[F8:1D:78:63:3D:FA][LE]> characteristics
+handle: 0x0002, char properties: 0x02, char value handle: 0x0003, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+handle: 0x0004, char properties: 0x02, char value handle: 0x0005, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+handle: 0x0006, char properties: 0x02, char value handle: 0x0007, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+handle: 0x000a, char properties: 0x0c, char value handle: 0x000b, uuid: 0000ffe9-0000-1000-8000-00805f9b34fb
+handle: 0x000d, char properties: 0x10, char value handle: 0x000e, uuid: 0000ffe4-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> primary
+attr handle: 0x0001, end grp handle: 0x0007 uuid: 00001800-0000-1000-8000-00805f9b34fb
+attr handle: 0x0008, end grp handle: 0x0008 uuid: 0000fff0-0000-1000-8000-00805f9b34fb
+attr handle: 0x0009, end grp handle: 0x000b uuid: 0000ffe5-0000-1000-8000-00805f9b34fb
+attr handle: 0x000c, end grp handle: 0xffff uuid: 0000ffe0-0000-1000-8000-00805f9b34fb
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0001
+Characteristic value/descriptor: 00 18 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0008
+Characteristic value/descriptor: f0 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0009
+Characteristic value/descriptor: e5 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000c
+Characteristic value/descriptor: e0 ff 
+[F8:1D:78:63:3D:FA][LE]> quit
+
+(gatttool:3998): GLib-WARNING **: Invalid file descriptor.
+
+chiara@chiara-N56VZ:~$ gatttool -I
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0001
+Characteristic value/descriptor: 00 18 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0008
+Characteristic value/descriptor: f0 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x0009
+Characteristic value/descriptor: e5 ff 
+[F8:1D:78:63:3D:FA][LE]> char-read-hnd 0x000c
+Characteristic value/descriptor: e0 ff 
+[F8:1D:78:63:3D:FA][LE]> 
+

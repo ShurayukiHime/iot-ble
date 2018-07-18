@@ -1,0 +1,115 @@
+chiara@chiara-N56VZ:~$ bluetoothctl
+[NEW] Controller 6C:71:D9:2C:3B:2E chiara-N56VZ [default]
+[NEW] Device F8:1D:78:63:3D:FA LEDBLE-78633DFA
+[bluetooth]# power off
+Changing power off succeeded
+[CHG] Controller 6C:71:D9:2C:3B:2E Powered: no
+[CHG] Controller 6C:71:D9:2C:3B:2E Discovering: no
+[CHG] Controller 6C:71:D9:2C:3B:2E Class: 0x000000
+[bluetooth]# power on
+[CHG] Controller 6C:71:D9:2C:3B:2E Class: 0x0c010c
+Changing power on succeeded
+[CHG] Controller 6C:71:D9:2C:3B:2E Powered: yes
+[bluetooth]# agent on
+Agent registered
+[bluetooth]# default-agent
+Default agent request successful
+[bluetooth]# scan on
+Discovery started
+[CHG] Controller 6C:71:D9:2C:3B:2E Discovering: yes
+[NEW] Device 1C:B7:2C:56:F6:88 ASUS_Z00AD
+[CHG] Device F8:1D:78:63:3D:FA RSSI: -59
+[NEW] Device 4B:17:24:EA:C4:87 4B-17-24-EA-C4-87
+[NEW] Device 68:64:4B:01:77:93 68-64-4B-01-77-93
+[NEW] Device 4B:8B:89:59:04:67 4B-8B-89-59-04-67
+[NEW] Device 7F:99:D9:71:78:93 7F-99-D9-71-78-93
+[NEW] Device A4:D1:8C:6D:D2:8E A4-D1-8C-6D-D2-8E
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -44
+[NEW] Device 3C:74:37:D1:F0:DF 3C-74-37-D1-F0-DF
+[NEW] Device 98:9C:57:6E:D4:81 MarcoLecce
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -59
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -68
+[NEW] Device C9:B4:18:C6:47:EF mobike
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -76
+[NEW] Device 20:17:10:26:39:BD Window
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -60
+[NEW] Device D5:7A:0D:25:DE:50 MI Band 2
+[NEW] Device 70:1C:E7:3D:1A:02 LAPTOP-VGUHMUNN
+[NEW] Device 00:68:58:00:67:EA Master
+[NEW] Device 64:A2:F9:30:E6:8A 64-A2-F9-30-E6-8A
+[CHG] Device 4B:8B:89:59:04:67 RSSI: -90
+[CHG] Device 4B:8B:89:59:04:67 RSSI: -82
+[bluetooth]# scan off
+[CHG] Device 64:A2:F9:30:E6:8A RSSI is nil
+[CHG] Device 00:68:58:00:67:EA RSSI is nil
+[CHG] Device 70:1C:E7:3D:1A:02 RSSI is nil
+[CHG] Device D5:7A:0D:25:DE:50 RSSI is nil
+[CHG] Device 20:17:10:26:39:BD RSSI is nil
+[CHG] Device C9:B4:18:C6:47:EF RSSI is nil
+[CHG] Device 98:9C:57:6E:D4:81 RSSI is nil
+[CHG] Device 3C:74:37:D1:F0:DF RSSI is nil
+[CHG] Device A4:D1:8C:6D:D2:8E RSSI is nil
+[CHG] Device 7F:99:D9:71:78:93 RSSI is nil
+[CHG] Device 4B:8B:89:59:04:67 RSSI is nil
+[CHG] Device 68:64:4B:01:77:93 RSSI is nil
+[CHG] Device 4B:17:24:EA:C4:87 RSSI is nil
+[CHG] Device F8:1D:78:63:3D:FA RSSI is nil
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI is nil
+Discovery stopped
+[CHG] Controller 6C:71:D9:2C:3B:2E Discovering: no
+[bluetooth]# scan on
+Discovery started
+[CHG] Controller 6C:71:D9:2C:3B:2E Discovering: yes
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI: -58
+[CHG] Device 20:17:10:26:39:BD RSSI: -91
+[CHG] Device 68:64:4B:01:77:93 RSSI: -89
+[CHG] Device 4B:8B:89:59:04:67 RSSI: -78
+[bluetooth]# devices
+Device F8:1D:78:63:3D:FA LEDBLE-78633DFA
+Device 1C:B7:2C:56:F6:88 ASUS_Z00AD
+Device 4B:17:24:EA:C4:87 4B-17-24-EA-C4-87
+Device 68:64:4B:01:77:93 68-64-4B-01-77-93
+Device 4B:8B:89:59:04:67 4B-8B-89-59-04-67
+Device 7F:99:D9:71:78:93 7F-99-D9-71-78-93
+Device A4:D1:8C:6D:D2:8E A4-D1-8C-6D-D2-8E
+Device 3C:74:37:D1:F0:DF 3C-74-37-D1-F0-DF
+Device 98:9C:57:6E:D4:81 MarcoLecce
+Device C9:B4:18:C6:47:EF mobike
+Device 20:17:10:26:39:BD Window
+Device D5:7A:0D:25:DE:50 MI Band 2
+Device 70:1C:E7:3D:1A:02 LAPTOP-VGUHMUNN
+Device 00:68:58:00:67:EA Master
+Device 64:A2:F9:30:E6:8A 64-A2-F9-30-E6-8A
+[CHG] Device A4:D1:8C:6D:D2:8E RSSI: -76
+[CHG] Device F8:1D:78:63:3D:FA RSSI: -63
+[CHG] Device 7F:99:D9:71:78:93 RSSI: -95
+[bluetooth]# scan off
+[CHG] Device 7F:99:D9:71:78:93 RSSI is nil
+[CHG] Device F8:1D:78:63:3D:FA RSSI is nil
+[CHG] Device A4:D1:8C:6D:D2:8E RSSI is nil
+[CHG] Device 4B:8B:89:59:04:67 RSSI is nil
+[CHG] Device 68:64:4B:01:77:93 RSSI is nil
+[CHG] Device 20:17:10:26:39:BD RSSI is nil
+[CHG] Device 1C:B7:2C:56:F6:88 RSSI is nil
+[CHG] Controller 6C:71:D9:2C:3B:2E Discovering: no
+Discovery stopped
+[bluetooth]# info F8:1D:78:63:3D:FA
+Device F8:1D:78:63:3D:FA
+	Name: LEDBLE-78633DFA
+	Alias: LEDBLE-78633DFA
+	Appearance: 0x0240
+	Paired: yes
+	Trusted: yes
+	Blocked: no
+	Connected: no
+	LegacyPairing: no
+	UUID: Generic Access Profile    (00001800-0000-1000-8000-00805f9b34fb)
+	UUID: Unknown                   (0000ffe0-0000-1000-8000-00805f9b34fb)
+	UUID: Unknown                   (0000ffe5-0000-1000-8000-00805f9b34fb)
+	UUID: Unknown                   (0000fff0-0000-1000-8000-00805f9b34fb)
+[bluetooth]# pair F8:1D:78:63:3D:FA
+Attempting to pair with F8:1D:78:63:3D:FA
+[CHG] Device F8:1D:78:63:3D:FA Connected: yes
+[LEDBLE-78633DFA]# list-attributes F8:1D:78:63:3D:FA
+[LEDBLE-78633DFA]# 
+
