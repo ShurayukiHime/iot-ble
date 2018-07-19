@@ -403,15 +403,15 @@ Have patience.
 ## Bash commands
 
 ### systemctl bluetooth.service
-- systemctl start bluetooth.service
-- systemctl restart bluetooth.service
-- systemctl enable bluetooth.service
+- `systemctl start bluetooth.service`
+- `systemctl restart bluetooth.service`
+- `systemctl enable bluetooth.service`
 
 They control the low-level bluetoothd demon, to start, enable and reset it. The effects of these commands may be checked via GUI as well as with the command `service bluetooth status` possibly with option `-l`.
 
 Its error codes are mostly confusing and unfathomable to understand, although if you put some effort in it you could obtain some good achievements.
 
-- If talks about something being blocked, check with `rfkill -l` to see if Bluetooth appears to be soft or hard block. In case, you may as well unblock it with `rfkill`.
+- If talks about something being blocked, check with `rfkill list` to see if Bluetooth appears to be soft or hard block. In case, you may as well unblock it with `rfkill`.
 - It could say that bluetooth is up and running, while actually it isn't. In this case, check for `time out` error codes. This will be the confirmation that bluetooth is not working properly - the demon has been started but failed to activate.
 	- Confirmation can be attained via `hcitool dev` and `hciconfig -a`, which may show either no MAC address, or a completely zeroed address, or an ordinary address - in this case `hciconfig` will say that the device is down.
 
@@ -426,12 +426,12 @@ Simple command to check bluetooth status, make LE scans and connect to bluetooth
 Similar to `hcitool` but a bit more useful.
 
 - `hciconfig -a` shows all active devices and their properties. You can obtain some more information with `hciconfig devInt0 commands` and `hciconfig devInt0 features`. It is important to pay attention to two characteristics:
-	- If the device is UP RUNNING or DOWN, and in this latter case whether it has been assigned a MAC address (most fortunate case)
+	- If the device is UP RUNNING or DOWN, and in this latter case whether it has been assigned a MAC address (most fortunate case).
 	- If you know that your device supports LE, but no information is provided about it, you should know that something is not working. In regular cases, many lines of description are returned when invoking this command, including some about LE features.
 - Device can be restarted or enabled via `hciconfig`, but this rarely works if there is a low-level problem with the bluetooth demon. Commands `hciconfig devInt0 reset` and so on.
 
 ### hcidump
-Even less simple command, still more useful. Keep it in mind if you manage to get your bluetooth working fine. `hcidump` prints dumps of data exchanged between the laptop (or whatever) receiver and the mobile device. They can be either raw hex or pretty printed. They mostly correspond with what you'd find with wireshark.
+Even less simple command, still more useful. Keep it in mind if you manage to get your bluetooth working fine. `hcidump` prints dumps of data exchanged between the laptop (or whatever) receiver and the mobile device. They can be either raw hex or pretty printed. They mostly correspond with what you'd find with Wireshark.
 
 ### gatttool ---incomplete
 
@@ -451,6 +451,6 @@ Wireshark address filter: `bthci_evt.bd_addr == c6:f8:ce:66:73:7e`
 
 We used the example ble gap button. This programs records the number of hits on the user button and sends non connectable advertising events on the main channel. Thus, the device is visible but it is impossible to connect to, as it is programmed only to perform advertising.
 It is possible to read the value written in the data field as it doesn't have any encoding and is publicly advertised. We tested and tried three different approaches:
-1) packet sniffing via CMD using `bluetoothctl` (you have to retrieve the hexdump as it automatically tries to display data, making it meaningless)
-2) packet sniffing via Wireshark
-3) packet sniffing via Android app BLE scanner (the app returns only advertising data, but it matches with wireshark)
+1) packet sniffing via CMD using `bluetoothctl` (you have to retrieve the hexdump as it automatically tries to display data, making it meaningless).
+2) packet sniffing via Wireshark.
+3) packet sniffing via Android app BLE scanner (the app returns only advertising data, but it matches with Wireshark).
