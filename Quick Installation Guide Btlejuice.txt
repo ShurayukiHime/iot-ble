@@ -1,0 +1,25 @@
+------Quick Installation Guide for Btlejuice----
+
+ - works for Ubuntu 16.04
+ - git repository: https://github.com/DigitalSecurity/btlejuice
+ 
+1) Install node and npm
+	> I installed them through a nvm.
+		Throught the nvm the installation is a lot easier and it may help you avoid permission errors.
+	> Additionally, you can create a npm account and access from the terminal once the installation is complete.
+	> Nvm git repository: "https://github.com/creationix/nvm".
+	> Command: "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash" .
+	> Control if you are downloading the last released version.
+  
+2) Install btlejuice
+	> Command: (sudo) npm install btlejuice
+	> May be necessary to install bluetooth-hci-socket ( npm install bluetooth-hci-socket).
+	> If it's not working, download the repo from git (https://github.com/noble/node-bluetooth-hci-socket).
+	> I had problems even in this case, so I had to run the terminal as root (sudo -H gnome-terminal).
+	  Had to do this because during the installation there were still permission errors;
+	  it may be necessary to change the rights for some directories.
+	
+3) Get it started
+	> On one machine you start the proxy with "sudo btlejuice-proxy".
+	> On the other one (the client) you connect to the proxy's IP.
+	> Should load the web interface and then you can start your attacks!
