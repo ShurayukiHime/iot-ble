@@ -1,0 +1,15 @@
+\chapter{Introduction}
+\label{Intro}
+\thispagestyle{empty}
+
+\noindent Bluetooth Low Energy devices are flooding the market of cheap, wearable, health, home-appliance electronics. Some examples include monitoring devices for sport, health and outdoor activities in general; they also connect many household appliances as well as security cameras and locks. Other interesting use-cases include wristbands used in theme parks or live music concerts (although the technology may differ).
+
+Intrinsically, these devices perform very simple tasks, mostly in the field of data gathering. It seems totally harmless to have a smart watch tracking your position at any time of day, but what if it were possible for anyone to query it and extract its data? Their minimalism is what makes them so appealing to the general public, but it is sometimes their intrinsic weakness.
+
+Moving a bit further from \textit{"hackers"} and information security, data gathering is a fundamental step for data analysis in a Big Data context. Privacy concerns should be taken into consideration also in terms of data anonymization.
+
+In this project report, we will start by describing general device characteristics and Bluetooth specifications. We will then move to their concrete observation with hands-on analyses, taking into consideration different developing tools and devices. In particular, we will focus our attention on security risks and concrete flaws, highlighting security exploits when possible. Finally, we will summarize our findings, including a few ideas for future directions and developments.
+
+For our tests, we used a Mi Band 2 smart band, a Magic Blue smart lightbulb and a ST Microelectronics IoT node (model \texttt{STM32L475 MCU}). The code was run both on Xubuntu and Kali Linux. It is worth mentioning that we also tried to use a Ubuntu GNOME OS, virtualized via VMWare on Windows 10, but this option was soon discarded as VMWare does not provide the drivers for Bluetooth Low Energy.
+
+The software at our disposal included the builtin Linux commands, as well as Wireshark and Android apps (namely BLEScanner and nRFConnect). As we will see, we also tested some open-source tools available from Github: bleah, btlejuice and gattacker.

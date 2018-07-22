@@ -1,0 +1,36 @@
+\chapter{A simple implementation}
+\label{chapter3}
+\thispagestyle{empty}
+
+\noindent 
+\begin{itemize}
+	\item Integrity is granted for the policy in plain text by sharing its digest, encrypted with the Trusted Authority's public key.
+	\item Confidentiality is granted both for the personal data, which is shared encrypted, and for its symmetric key which is encrypted together with the policy's digest
+	\item Non-refusal is granted for all of the shared data thanks to the signing function applied by the data owner.
+\end{itemize}
+
+To decrypt Alice's data, Bob must follow these steps:
+\begin{itemize}
+	\item Bob asks the Trust Authority to release the symmetric key, presenting the encrypted data signed by Alice.
+	\item The Trust Authority evaluates the policy and Bob's reliability, submitting some challenges for him to complete.
+	\item If trusted, Bob receives the symmetric key to decrypt Alice's personal data.
+\end{itemize}
+
+
+\section{Program flow and architecture}
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.35\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{} % first figure itself
+		\caption{Sharing secret text}
+		\label{fig:share-text}
+	\end{minipage}
+	\begin{minipage}{0.35\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{} % second figure itself
+		\caption{Sharing a personal image}
+		\label{fig:share-img}
+	\end{minipage}
+\end{figure}

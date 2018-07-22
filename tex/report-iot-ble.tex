@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper,openright,twoside]{report}
+
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+\usepackage{mwe}
+\usepackage{pdfpages}
+
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{newlfont}
+\usepackage{xcolor}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{light-gray}{gray}{0.95}
+\usepackage{listings}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amsthm}
+
+\oddsidemargin=30pt \evensidemargin=20pt%impostano i margini
+\usepackage[htt]{hyphenat} %per andare a capo nei typescript
+\hyphenation{uni-ver-sity
+	uni-ver-sit-ies
+	how-ever
+	ma-nu-script
+	ma-nu-scripts
+	re-ci-pro-city
+	through-out
+	some-thing
+	al-tern-ate}%serve per la sillabazione: tra parentesi 
+
+\pagestyle{fancy}\addtolength{\headwidth}{20pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\cfoot{}
+
+%\linespread{1.3}                     
+
+\begin{document}
+	
+	\includepdf{title-by-itself}
+	\clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
+	
+	\include{indice}                        
+	\clearpage{\pagestyle{empty}\cleardoublepage}
+	\pagenumbering{arabic}                  %mette i numeri arabi
+
+	\include{capitolo1}
+	\include{capitolo2}
+
+	\clearpage{\pagestyle{empty}\cleardoublepage}
+	\addcontentsline{toc}{chapter}{Bibliography}
+	\bibliographystyle{plainurl}
+	\bibliography{bibl_tesi}
+	
+	\appendix
+	
+	\pagestyle{fancy} 
+	\fancyfoot{}                                               
+	\renewcommand{\chaptermark}[1]{\markboth{\appendixname\ \thechapter.\ #1}{}} 
+	\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}         
+	\fancyhead[LE,RO]{\bfseries\thepage}    
+	
+	\fancyhead[RE]{\bfseries\leftmark}    
+	\fancyhead[LO]{\bfseries\rightmark}     
+	\renewcommand{\headrulewidth}{0.3pt} 
+
+\end{document}
