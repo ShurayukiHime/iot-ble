@@ -9,11 +9,24 @@
 Devices can be divided into three categories: Advertisers, Scanners and Initiators. 
 Communication has to be started by an initiator device following an \textit{advertisement connectable packet} (\texttt{ADV\_IND}). Advertisement is performed on the primary channels, while bidirectional communication happens on one of the 37 secondary channels, decided during the connection procedure. When a connection is established, the initiator and the advertiser respectively become the master and slave devices; while the former can be involved in more than one communication, the slave device can belong to a single \textit{piconet} at a time. In fact, it is not possible to have a BLE device paired with more than one "master" device at the same time.
 
-Advertising may also be \textit{non-connectable} (\texttt{ADV\_NONCONN\_IND}): the LE device periodically sends its data on the main channel for every scanner to read. This is really convenient in terms of implementation, but it also represent the least secure solution, as data is sent in clear text.
+As we had the possibility to concretely program a BLE device, we show in Listing \ref{list:adv-conn} an extract of code in which the device is advertising \textit{connectable} packets.
+\lstinputlisting[caption={Set up flags for device mode of operation: connectable},label={list:adv-conn},language=c++]{example-adv-conn.cpp}
+
+Advertising may also be \textit{non-connectable} (\texttt{ADV\_NONCONN\_IND}): the LE device periodically sends its data on the main channel for every scanner to read. This is really convenient in terms of implementation, but it also represent the least secure solution, as data is sent in clear text. In Listing \ref{list:adv-nonconn} we highlight the different parameter used to set \textit{non-connectable} advertising.
+\lstinputlisting[caption={Set up flags for device mode of operation: non connectable},label={list:adv-nonconn},language=c++]{example-adv-nonconn.cpp}
 
 On the whole, the Specification defines six different advertising packets, among which we also report the request for additional information from the advertisement (\texttt{SCAN\_REQ}), it having a direct corresponding bash command.
 
 \section{Decypher Advertising Packets}
-Before considering Man-In-The-Middle techniques, we show how it is possible to intercept data from advertising devices, mentioned in the previous chapter.
+Before considering Man-In-The-Middle techniques, we show how it is possible to intercept data from advertising devices, mentioned in the previous section.
 
-For this experiment, we used the STM IoT node and tested it on both our Linux distributions. The board simply worked as a thermometer, measuring the temperature in the environment and broadcasting it as a non-connectable advertising packet.
+For this experiment, we used the STM IoT node and tested it on both our Linux distributions. The board retrieves the temperature and humidity levels in the environment and broadcasts them as a non-connectable advertising packet, as we can see in Listing \ref{list:adv-temp-hum}.
+\lstinputlisting[caption={Retrieve sensor values and update packet},label={list:adv-temp-hum},language=c++]{example-temphum.cpp}
+
+Packets broadcasted by the board can be retrieved with any of the tools described at the end of the previous chapter. We analysed the payload and found that it follows this structure:
+\begin{center}
+	\textit{length - meaning - content}.
+\end{center}
+The length is expressed in bytes and it refers to the overall size of \textit{meaning} and \textit{content}. The former two is a label which has to be matched with the corresponding Bluetooth GAP Assigned Number (specification available on the website) to understand its meaning. Common examples are \texttt{0x09} for "Complete Local Name" or \texttt{0x0a} for "Power Level". In our case, the label corresponds to "Service data 16-bit UUID", which means that we should look at the next two bytes to have a more precise indication of the received data. Vendors usually publish a web page in which they list all their codes with the respective meaning, while in this example we can see that its value is added to the payload in \texttt{service\_data[0]}, and corresponds to \texttt{00 aa}.
+
+Finally, the next two bytes encode the temperature and humidity in the room.

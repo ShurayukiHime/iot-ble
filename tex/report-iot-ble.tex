@@ -21,6 +21,25 @@
 \definecolor{pred}{rgb}{0.9,0,0}
 \definecolor{light-gray}{gray}{0.95}
 \usepackage{listings}
+\lstset{ 
+	backgroundcolor=\color{light-gray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	%language=XML,                	 % the language of the code
+	commentstyle=\color{mygreen},    % comment style
+	keywordstyle=\color{blue},       % keyword style
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	%stringstyle=\color{pred},
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=4		%modify tab space, default too wide
+}
 
 \usepackage{amssymb}
 \usepackage{amsmath}
