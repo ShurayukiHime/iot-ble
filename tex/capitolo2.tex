@@ -62,8 +62,11 @@ Once the advertising process governed by GAP has concluded, it's the GATT turn t
 
 GATT basically supports a server/client relationship where the entities are called GATT Server and GATT Client, the latter being usually a phone or a tablet that sendings requests to the server. The master device is responsible for the initiation of the transaction, and once the connection is stable, the Peripheral will suggest a \textit{Connection Interval} for the connection, to see if there is new data available. However it is not compulsory for the central device to honour the request of the client if resources are not available.
 
-
---------> INSERT IMAGE OF MASTER/SERVANT TRANSACTION HERE <-------
+\begin{figure}
+	\centering	
+		\includegraphics{width=0.9\textwidth}{gatt.png}
+	\label{fig:gatt}
+\end{figure}
 
 \subsection{Profiles, Services and Characteristics}
 As previously mentioned, GATT transactions make use of high-level nested objects called Profiles, Services and Characteristics.
