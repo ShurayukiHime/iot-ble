@@ -1,0 +1,5 @@
+chiara@chiara-N56VZ:~$ gatttool -I
+
+[                 ][LE]> connect F8:1D:78:63:3D:FA
+Attempting to connect to F8:1D:78:63:3D:FA
+Connection successful

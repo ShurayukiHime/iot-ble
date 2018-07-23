@@ -1,0 +1,29 @@
+[F8:1D:78:63:3D:FA][LE]> help 
+help                                           Show this help
+exit                                           Exit interactive mode
+quit                                           Exit interactive mode
+connect         [address [address type]]       Connect to a remote device
+disconnect                                     Disconnect from a remote device
+primary         [UUID]                         Primary Service Discovery
+included        [start hnd [end hnd]]          Find Included Services
+characteristics [start hnd [end hnd [UUID]]]   Characteristics Discovery
+char-desc       [start hnd] [end hnd]          Characteristics Descriptor Discovery
+char-read-hnd   <handle>                       Characteristics Value/Descriptor Read by handle
+char-read-uuid  <UUID> [start hnd] [end hnd]   Characteristics Value/Descriptor Read by UUID
+char-write-req  <handle> <new value>           Characteristic Value Write (Write Request)
+char-write-cmd  <handle> <new value>           Characteristic Value Write (No response)
+sec-level       [low | medium | high]          Set security level. Default: low
+mtu             <value>                        Exchange MTU for GATT/ATT
+
+[F8:1D:78:63:3D:FA][LE]> characteristics
+handle: 0x0002, char properties: 0x02, char value handle: 0x0003, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+handle: 0x0004, char properties: 0x02, char value handle: 0x0005, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+handle: 0x0006, char properties: 0x02, char value handle: 0x0007, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+handle: 0x000a, char properties: 0x0c, char value handle: 0x000b, uuid: 0000ffe9-0000-1000-8000-00805f9b34fb
+handle: 0x000d, char properties: 0x10, char value handle: 0x000e, uuid: 0000ffe4-0000-1000-8000-00805f9b34fb
+
+[F8:1D:78:63:3D:FA][LE]> primary
+attr handle: 0x0001, end grp handle: 0x0007 uuid: 00001800-0000-1000-8000-00805f9b34fb
+attr handle: 0x0008, end grp handle: 0x0008 uuid: 0000fff0-0000-1000-8000-00805f9b34fb
+attr handle: 0x0009, end grp handle: 0x000b uuid: 0000ffe5-0000-1000-8000-00805f9b34fb
+attr handle: 0x000c, end grp handle: 0xffff uuid: 0000ffe0-0000-1000-8000-00805f9b34f

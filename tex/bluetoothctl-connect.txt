@@ -1,0 +1,14 @@
+chiara@chiara-N56VZ:~$ bluetoothctl
+[NEW] Controller 6C:71:D9:2C:3B:2E chiara-N56VZ [default]
+[NEW] Device F8:1D:78:63:3D:FA LEDBLE-78633DFA
+
+[bluetooth]# scan on
+Discovery started
+Device F8:1D:78:63:3D:FA LEDBLE-78633DFA
+Device 1C:B7:2C:56:F6:88 ASUS_Z00AD
+Device 4B:17:24:EA:C4:87 4B-17-24-EA-C4-87
+Device 68:64:4B:01:77:93 68-64-4B-01-77-93
+
+[bluetooth]# connect F8:1D:78:63:3D:FA
+Attempting to connect with F8:1D:78:63:3D:FA
+[CHG] Device F8:1D:78:63:3D:FA Connected: yes
