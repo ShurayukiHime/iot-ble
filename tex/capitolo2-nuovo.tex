@@ -1,0 +1,98 @@
+% !TeX spellcheck = en_GB
+\chapter{Bluetooth Low Energy Specification}
+\label{chapter2}
+\thispagestyle{empty}
+
+\noindent In this chapter we briefly report the main technical characteristics of the Bluetooth Low Energy Personal-Area-Network technology. Our main reference is the Core Specification 5.0 available on the official website. When possible, we couple the theoretical concepts with some examples from our own experience.
+
+\section{Network Topology and Devices}
+GAP (Generic Attribute Profile) is the one responsible in defining the general topology of the BLE network.
+There are two ways in which devices can communicate between themselves: broadcasting or connecting, and both of these methods are subjected to the Generic Access Profile Guidelines.
+In general, devices can be divided into three categories: Advertisers, Scanners and Initiators. 
+When broadcasting, the connection is not necessary, so there are only the broadcaster (advertiser) and the observer (scanner), that respectively advertise data packets and listen to them.
+What sparks our interest is the Connection Method, that is most commonly used when talking about BLE devices.
+Communication has to be started by an initiator device following an \textit{advertisement connectable packet} (\texttt{ADV\_IND}). Advertisement is performed on the primary channels, while bidirectional communication happens on one of the 37 secondary channels, decided during the connection procedure. When a connection is established, the initiator and the advertiser respectively become the master and slave devices; while the former can be involved in more than one communication, the slave device can belong to a single \textit{piconet} at a time. In fact, it is not possible to have a BLE device paired with more than one "master" device at the same time.
+
+As we had the possibility to concretely program a BLE device, we show in Listing \ref{list:adv-conn} an extract of code in which the device is advertising \textit{connectable} packets.
+\lstinputlisting[caption={Set up flags for device mode of operation: connectable},label={list:adv-conn},language=c++]{example-adv-conn.cpp}
+
+Advertising may also be \textit{non-connectable} (\texttt{ADV\_NONCONN\_IND}): the LE device periodically sends its data on the main channel for every scanner to read. This is really convenient in terms of implementation, but it also represent the least secure solution, as data is sent in clear text. In Listing \ref{list:adv-nonconn} we highlight the different parameter used to set \textit{non-connectable} advertising.
+\lstinputlisting[caption={Set up flags for device mode of operation: non connectable},label={list:adv-nonconn},language=c++]{example-adv-nonconn.cpp}
+
+On the whole, the Specification defines six different advertising packets, among which we also report the request for additional information from the advertisement (\texttt{SCAN\_REQ}), it having a direct corresponding bash command.
+
+We also have to consider that devices advertise at random intervals to avoid collisions, thus it may happen that the target device is not immediately discovered by the scanner.
+
+For this experiment, we used the STM IoT node and tested it on both our Linux distributions. The board retrieves the temperature and humidity levels in the environment and broadcasts them as a non-connectable advertising packet, as we can see in Listing \ref{list:adv-temp-hum}.
+\lstinputlisting[caption={Retrieve sensor values and update packet},label={list:adv-temp-hum},language=c++]{example-temphum.cpp}
+
+Packets broadcasted by the board can be retrieved with any of the tools described at the end of the previous chapter. We analysed the payload and found that it follows this structure:
+\begin{center}
+	\textit{length - meaning - content}.
+\end{center}
+The length is expressed in bytes and it refers to the overall size of \textit{meaning} and \textit{content}. The former two is a label which has to be matched with the corresponding Bluetooth GAP Assigned Number (specification available on the website, we report the table in Appendix \ref{appendixA}) to understand its meaning. Common examples are \texttt{0x09} for "Complete Local Name" or \texttt{0x0a} for "Power Level". In our case, the label corresponds to "Service data 16-bit UUID", which means that we should look at the next two bytes to have a more precise indication of the received data. Vendors usually publish a web page in which they list all their codes with the respective meaning, while in this example we can see that its value is added to the payload in \texttt{service\_data[0]}, and corresponds to \texttt{00 aa}.
+
+Finally, the next two bytes encode the temperature and humidity in the room.
+
+\section{Connection}
+When the Scanner device answers to an advertisement message, a secondary channel is established for bidirectional communication. This channel is randomly chosen and communicated to the advertiser in the connection request packet. As previously mentioned, the slave device can be paired with a single master at a time, consequently all subsequent communications will happen in the established secondary channel, also granting additional connection speed.
+
+Pairing procedures vary depending on the Bluetooth Low Energy device. They are mentioned in the Specification as \textit{Association modes} and they are the following:
+\begin{itemize}
+	\item Numeric Comparison: used when the devices can show numbers (at least 6 digits) and can receive user input (e.g. yes or no), like a phone or a laptop. Devices wishing to pair should show the same number, and the owners have to confirm the match.
+	\begin{itemize}
+		\item This usually happen when pairing two mobile phones or a mobile phone to a laptop. In case the BLE device has a display, this association mode is attempted.
+	\end{itemize}
+	\item Just Works: used when 1+ devices doesn't have a keyboard for user IO and / or cannot display 6 digits. Consequently, no PIN is shown and the user just has to accept the connection.
+	\begin{itemize}
+		\item This is the case of the STM IoT Node. When attempting to connect from any Scanner device, the connection is established without authentication.
+		\item It is also the case of the Magic Blue smart bulb: the device pairs with any scanner.
+		\item In both situations, to unpair from the device it is necessary to unplug from the power source.
+	\end{itemize}
+	\item Out Of Band: used when there is a (secure) OOB channel for pairing and security keys exchange. Of course, if such channel is not secure the whole process may be compromised.
+	\item Passkey Entry: one device has input capabilities, but can't display 6 digits; the other device has output capabilities: the PIN is showed on the second device, and the connection is "confirmed" by entering the same PIN on the first device. Note that in this case the PIN is created by a specific security algorithm, while in legacy versions was an input from the user.
+	\begin{itemize}
+		\item This is the case of the Mi Band 2 smart band, in which it is not possible to display PIN numbers, but there is an input device: when attempting to pair, the band vibrates and asks for confirmation by tapping its button.
+	\end{itemize}
+\end{itemize}
+
+\section{GATT Transactions}
+While GAP defines how BLE-enabled devices can make themselves available, GATT (Generic Attribute Profile) defines in detail how two Bluetooth Low Energy devices can connect and transfer data back and forth.
+The communications features \text{Profiles}, \textit{Services} and \textit{Characteristics}: they make use of the Attribute Protocol (ATT) that stores all the details related to the device in a simple lookup table using, 16-bit IDs for each entry in the table.
+
+Once the advertising process governed by GAP has concluded, it's the GATT turn to enter the scene.
+It's important to take into account that connections are exclusive and thus one device can be only connected to one central unit at time.
+To communicate between two devices there's only one way, and that's to create a connection in which the central device sends meaningful data to the peripheral and vice versa.
+
+The connection is not symmetrical: the peripheral can connect to one central while the central can connect with multiple peripheral devices.
+It may also be possible for peripherals to exchange data between themselves through a mailbox system that needs to be implemented and where all messages pass through the central unit.
+
+Once the peripheral-central connection is established communication can take place in both directions, differently from the one-way broadcasting approach of advertising data and GAP.
+
+GATT basically supports a server/client relationship where the first one is called GATT Server and the second one is the GATT Client, usually a phone or a tablet that sends requests to the server.
+The master device is the one responsible for the initiation of the transaction, and once the connection is stable, the peripheral will suggest a 'Connection Interval' for the connection, to see if there's new data available. However it's not compulsory for the central device to honour the request of the client if resources aren't available.
+
+
+--------> INSERT IMAGE OF MASTER/SERVANT TRANSACTION HERE <-------
+
+\subsection{Profiles, Services and Characteristics}
+
+As mentioned previously GATT transactions make use of high-level, nested objects called Profiles, Services and Characteristics.
+
+\begin{itemize}
+	\item Profile: it's the collection of Services on the device that has been compiled by the peripheral designers.
+	
+	\item Services: they contain specific chunks of data that are the Characteristics. A service can have one or more characteristics and each service is identified through a unique number called UUID, that can be either 16-bit or 128-bit depending on the manufacturing of the device.
+	Services can be explored on the Services of the Bluetooth Developer Portal, thus it's easy to track a service and its purpose in case the Service is named "Unknown".
+	
+	\item Characteristics: this is the lowest level in a GATT transaction and contains a single data point (it may be a single value or an array of bytes, depending on the type of data transmitted). Characteristics are composed by various elements such as a type, a value, properties and permissions.
+	Properties, in particular, define what another device can do with the characteristics over Bluetooth in terms of operations such as READ, WRITE or NOTIFY.
+	\begin{itemize}
+		\item READING a characteristics means copying the current value to the connected device.
+		\item WRITING allows the connected device to insert new values of data.
+		\item NOTIFICATIONS consist in a message type sent in case of changes in a value, periodically.
+	\end{itemize}
+	Permissions specify the condition that must be met before reading or writing data to the characteristic is granted.
+	
+	\item Descriptors: there is another level below the Characteristics level, that contains meta-data related to it. For example it's possible enable or disable notifications through the Client Characteristic Configuration Descriptor.
+\end{itemize}
