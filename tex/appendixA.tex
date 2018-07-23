@@ -2,11 +2,50 @@
 \label{appendixA}
 \thispagestyle{empty}
 
-\begin{figure}
-	\centering
-	\begin{minipage}{0.9\textwidth}
-		\centering
-		\includegraphics[width=0.8\textwidth]{GAP-assigned-numbers.png}
-	\end{minipage}
-	\label{fig1-GAP-numbers}
-\end{figure}
+\begin{longtable}{c c c} 
+	\hline
+		\textsc{Data Typ}e &	\textsc{Data Type Name} & \textsc{See advlib section} \\ \hline
+		 0x01 &	Flags &	Flags \\ \hline
+		 0x02 &	Incomplete List of 16-bit UUIDs &	UUID \\ \hline
+		 0x03 &	Complete List of 16-bit UUIDs &	UUID \\ \hline
+		 0x04 &	Incomplete List of 32-bit UUIDs &	UUID \\ \hline
+		 0x05 &	Complete List of 32-bit UUIDs &	UUID \\ \hline
+		 0x06 &	Incomplete List of 128-bit UUIDs &	UUID \\ \hline
+		 0x07 &	Complete List of 128-bit UUIDs &	UUID \\ \hline
+		 0x08 &	Shortened Local Name &	Local Name \\ \hline
+		 0x09 &	Complete Local Name &	Local Name \\ \hline
+		 0x0a &	Tx Power Level &	Tx Power \\ \hline
+		 0x0d &	Class of Device &	Generic Data \\ \hline
+		 0x0e &	Simple Pairing Hash C-192 &	Generic Data \\ \hline
+		 0x0f &	Simple Pairing Randomizer R-192 &	Generic Data \\ \hline
+		 0x10 &	Security Manager TK Value &	Generic Data \\ \hline
+		 0x11 &	Security Manager OOB Flags &	Generic Data \\ \hline
+		 0x12 &	Slave Connection Interval Range &	SCIR \\ \hline
+		 0x14 &	16-bit Solicitation UUIDs &	Solicitation \\ \hline
+		 0x15 &	128-bit Solicitation UUIDs &	Solicitation \\ \hline
+		 0x16 &	Service Data 16-bit UUID &	Service Data \\ \hline
+		 0x17 &	Public Target Address &	Generic Data \\ \hline
+		 0x18 &	Random Target Address &	Generic Data \\ \hline
+		 0x19 &	Public Target Address &	Generic Data \\ \hline
+		 0x1a &	Advertising Interval &	Generic Data \\ \hline
+		 0x1b &	LE Bluetooth Device Address &	Generic Data \\ \hline
+		 0x1c &	LE Bluetooth Role &	Generic Data \\ \hline
+		 0x1d &	Simple Pairing Hash C-256 &	Generic Data \\ \hline
+		 0x1e &	Simple Pairing Hash Randomizer C-256 &	Generic Data \\ \hline
+		 0x1f &	32-bit Solicitation UUIDs &	Solicitation \\ \hline
+		 0x20 &	Service Data 32-bit UUID &	Service Data \\ \hline
+		 0x21 &	Service Data 128-bit UUID &	Service Data \\ \hline
+		 0x22 &	LE Secure Con. Confirmation Value &	Generic Data \\ \hline
+		 0x23 &	LE Secure Connections Random Value &	Generic Data \\ \hline
+		 0x24 &	URI &	Generic Data \\ \hline
+		 0x25 &	Indoor Positioning &	Generic Data \\ \hline
+		 0x26 &	Transport Discovery Data &	Generic Data \\ \hline
+		 0x27 &	LE Supported Features &	Generic Data \\ \hline
+		 0x28 &	Channel Map Update Indication &	Generic Data \\ \hline
+		 0x29 &	PB-ADV &	Generic Data \\ \hline
+		 0x2a &	Mesh Message &	Generic Data \\ \hline
+		 0x2b &	Mesh Beacon &	Generic Data \\ \hline
+		 0x3d &	3-D Information Data &	Generic Data \\ \hline
+		 0xff &	Manufacturer Specific Data &	Mfr. Specific Data \\  \hline
+\end{longtable}
+
