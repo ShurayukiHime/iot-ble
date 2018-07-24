@@ -2,8 +2,7 @@
 \label{chapter3}
 \thispagestyle{empty}
 
-\noindent This chapter is dedicated to BLE traffic analysis between two BLE devices.
-First, we will show how we analysed, reverse-engineered and hacked a Magic Blue smart bulb, with the aid of a mobile phone. It is possible to download the Android application which works as an interface with the BLE device; we also used Wireshark 2.6.2 to easily process captured traffic.This tool is unable to sniff BLE packets unless another support is provided (like Ubertooth or Nordic Semiconductor dongle), so we decided to use Android Developer Tools to register incoming and outgoing Bluetooth traffic.
+\noindent This chapter is dedicated to BLE traffic analysis between two BLE devices. First, we will show how we analysed, reverse-engineered and hacked a Magic Blue smart bulb, with the aid of a mobile phone. It is possible to download the Android application which works as an interface with the BLE device; we also used Wireshark 2.6.2 to easily process captured traffic.This tool is unable to sniff BLE packets unless another support is provided (like Ubertooth or Nordic Semiconductor dongle), so we decided to use Android Developer Tools to register incoming and outgoing Bluetooth traffic.
 Through this setting, it becomes easy to track all the packets from the phone to the smart bulb in a single log file. 
 
 In the second example, we developed our own code on the Mbed Online Compiler and tested it on the STM IoT Node. We then tried to connect to the board from different interfaces (as our laptop's or mobile phone's) and used Wireshark to capture and interpret the traffic.
@@ -30,13 +29,13 @@ We tested also an alternative way to connect to the smart bulb, employing an And
 
 \begin{figure}
 	\centering
-		\includegraphics[width=0.9\textwidth]{nrfConnect.jpg}
-		\caption{Screenshots from the nRFConnect Android app when connecting to the smart bulb.}
+	\includegraphics[width=0.9\textwidth]{nrfConnect.jpg}
+	\caption{Screenshots from the nRFConnect Android app when connecting to the smart bulb.}
 	\label{fig:nrfConnect}
 \end{figure}	
 
 Although all the services are labelled as \textit{unknown} and it is not clear what their values mean, the structure of the device profile, including characteristics, services and descriptors is apparent.
-It becomes now clear that knowledge of the characteristics and services of a device is not sufficient to understand the meaning of the exchanged data. We thus moved to a different approach: reverse-engineering of the packet structure and content, as to finally understand its meaning. Unfortunately, as previously mentioned, due to the lack of a sniffing device (e.g. a dongle) we decided to use a "legit" way to capture some traffic packets. From Android 4.0 onward, Developer Tools provide the user with a tool to capture all Bluetooth HCI packets in a file, called \texttt{HCI snoop log}. It is important to highlight that this section is not usually available and it has to be activated directly from the user.
+It becomes now clear that knowledge of the characteristics and services of a device is not sufficient to understand the meaning of the exchanged data. We thus moved to a different approach: reverse-engineering of the packet structure and content, so to finally understand its meaning. Unfortunately, as previously mentioned, due to the lack of a sniffing device (e.g. a dongle) we decided to use a "legit" way to capture some traffic packets. From Android 4.0 onward, Developer Tools provide the user with a tool to capture all Bluetooth HCI packets in a file, called \texttt{HCI snoop log}. It is important to highlight that this section is not usually available and it has to be activated directly from the user.
 
 In the next step we connect to the MagicBlue app and select the smart bulb from the list of available devices. After pairing, it is possible to choose from a wide range of colours and modes, to modify the brightness and a blinking time interval, as well as to enable the microphone sensitivity or play music from the smart phone and light up the bulb accordingly. Any of these operations requires the phone to send the bulb data packets containing the command requests for the selected function, and all this information is recorded in a snoop log file.
 After transferring the file from the phone to a PC, Wireshark is the instrument needed to parse the log file.
@@ -66,35 +65,35 @@ In tables \ref{tab:colour-blebulb} and \ref{tab:light-blebulb} we provide a shor
 	\centering
 	\captionof{table}{Single colour choice} \label{tab:colour-blebulb}
 	\begin{tabular}{l l} 
-	\hline
-	Hex value &	Meaning  \\ \hline
-	56 &	Fixed prefix  \\ 
-	ff085a &	Colour RGB code \\ 
-	00 &	From 00 to ff, brightness of the light \\ 
-	0f OR f0 &	off/on \\ 
-	aa & Fixed suffix  \\ 
-\end {tabular}\par
-\bigskip
+		\hline
+		Hex value &	Meaning  \\ \hline
+		56 &	Fixed prefix  \\ 
+		ff085a &	Colour RGB code \\ 
+		00 &	From 00 to ff, brightness of the light \\ 
+		0f OR f0 &	off/on \\ 
+		aa & Fixed suffix  \\ 
+		\end {tabular}\par
+		\bigskip
 \end{minipage}
 
 \begin{minipage}{\linewidth}
 	\centering
 	\captionof{table}{Light Functions} \label{tab:light-blebulb}
 	\begin{tabular}{l l} 
-	\hline
-	Hex value &	Meaning  \\ \hline
-	bb &	Fixed prefix  \\ 
-	3 OR 2 &	Respectively active functions \textit{strobo} or \textit{gradual change} \\ 
-	0 &	From 00 to ff, brightness of the light \\ 
-	1 &	On-time of the lightbulb, from a quick flash (1) to 5 seconds \\ 
-	f & Interval of time between flashes (1 faster than f)  \\ 
-	44 & Fixed suffix  \\
-\end {tabular}\par
-\bigskip
+		\hline
+		Hex value &	Meaning  \\ \hline
+		bb &	Fixed prefix  \\ 
+		3 OR 2 &	Respectively active functions \textit{strobo} or \textit{gradual change} \\ 
+		0 &	From 00 to ff, brightness of the light \\ 
+		1 &	On-time of the lightbulb, from a quick flash (1) to 5 seconds \\ 
+		f & Interval of time between flashes (1 faster than f)  \\ 
+		44 & Fixed suffix  \\
+		\end {tabular}\par
+		\bigskip
 \end{minipage}
-	
+
 Hacking a smart bulb may be also accomplished by a Python script compiled for a Raspberry Pi device. There is a single requirement on the operating system of the component, as it is needed to install Bluez components as well as a compiler. This solution would allow controlling the device remotely in a continuous way. Moreover, there exists a full Python Compiler called MicroPython for ST Microelectronics, though not compatible with the board used in this project. The list of supported boards is available from the official site.
-	
+
 \section{Case Study: STM IoT Node} 
 For this experiment we used the STM IoT node and tested it on both Linux distributions. The board retrieves the temperature and humidity levels in the environment and broadcasts them as a non-connectable advertising packet, as we can see in Listing \ref{list:adv-temp-hum}.
 \lstinputlisting[caption={Retrieve sensor values and update packet},label={list:adv-temp-hum},language=c++]{example-temphum.cpp}
@@ -106,4 +105,3 @@ Packets broadcasted by the board can be retrieved with any of the tools describe
 The length is expressed in bytes and it refers to the overall size of \textit{meaning} and \textit{content}. The former two is a label which has to be matched with the corresponding Bluetooth GAP Assigned Number (specification available on the website, we report the table in Appendix \ref{appendixA}) to understand its meaning. Common examples are \texttt{0x09} for "Complete Local Name" or \texttt{0x0a} for "Power Level". In our case, the label corresponds to "Service data 16-bit UUID", which means that we should look at the next two bytes to have a more precise indication of the received data. Vendors usually publish a web page in which they list all their codes with the respective meaning, while in this example we can see that its value is added to the payload in \texttt{service\_data[0]}, and corresponds to \texttt{00 aa}.
 
 Finally, the next two bytes encode the temperature and humidity in the room.
-
