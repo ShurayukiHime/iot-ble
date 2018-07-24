@@ -1,0 +1,5 @@
+root@kali:~# hcitool lescan
+LE Scan ...
+D5:7A:0D:25:DE:50 (unknown)
+D5:7A:0D:25:DE:50 MI Band 2
+77:4E:A5:A1:B9:28 (unknown)

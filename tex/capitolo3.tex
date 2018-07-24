@@ -1,105 +1,102 @@
-\chapter{Hands On Analysis of BLE traffic}
+\chapter{Hacking BLE devices}
 \label{chapter3}
 \thispagestyle{empty}
 
-\noindent 
-This chapter is dedicated to BLE traffic analysis between two BLE devices.
-In the first case we used a phone and a smart bulb, in the second case a phone (in either cases even a laptop is fine) and a STM IoT Node.
-In particular we used a Magic Blue smart bulb that had it's own application, downloadable from the App Store, and Wireshark 2.6.2 software. As this tool is unable to sniff BLE packets unless another support is provided (like Ubertooth or Nordic Semiconductor dongle), we decided to use the phone Developers Option's tool to register incoming and outgoing Bluetooth traffic.
-Through this setting, it becomes easy to track all the packets from the phone to the smart bulb in a single log file. Wireshark provides an interface to read it in a comprehensible and user-friendly way.
-The STM Iot Node we used is the B-L475E-IOT1A2 Discovery kit with integrated BLE module, with the Mbed Online Compiler support.
+\noindent This chapter is dedicated to BLE traffic analysis between two BLE devices.
+First, we will show how we analysed, reverse-engineered and hacked a Magic Blue smart bulb, with the aid of a mobile phone. It is possible to download the Android application which works as an interface with the BLE device; we also used Wireshark 2.6.2 to easily process captured traffic.This tool is unable to sniff BLE packets unless another support is provided (like Ubertooth or Nordic Semiconductor dongle), so we decided to use Android Developer Tools to register incoming and outgoing Bluetooth traffic.
+Through this setting, it becomes easy to track all the packets from the phone to the smart bulb in a single log file. 
 
-\section{Hacking a smart bulb through BLE}
+In the second example, we developed our own code on the Mbed Online Compiler and tested it on the STM IoT Node. We then tried to connect to the board from different interfaces (as our laptop's or mobile phone's) and used Wireshark to capture and interpret the traffic.
+
+\section{Case study: Smart Bulb}
 \subsection{Connect to the device}
 
-The first step in order to sniff packets from a device is to know its bluetooth address and understand how its profile is structured.
-Many tools are available, just to mention the ones we employed, Hcitool, Bluetoothctl and Gatttool.
+The first step in order to sniff packets from a device requires to know its MAC address and understand its profile is structure. There are many open-source tools to accomplish this task, e.g. \texttt{hcitool}, \texttt{bluetoothctl} and \texttt{gatttool}. They come within the Bluez stack and can be easily used from the command line, where Bluez is the official Linux Bluetooth Protocol and provides support for Bluetooth Layers and Protocols. Due to its modularity, it is easy to install the needed modules and libraries, and quickly get to work with devices. In Listings \ref{list:conn-hcitool}, \ref{list:conn-bluetoothctl}, \ref{list:conn-gatttool} we show some possible usages of these three tools.
 
-These three programs are just an example of what the Bluez stack offers: it is the official Linux Bluetooth Protocol and provides support to the user for Bluetooth Layers and Protocols.
-Due to its modularity, it is easy to install just the modules and libraries that are needed, and quickly get to work with devices.
+Among other possibilities, it is worth mentioning a widespread Python implementation called \texttt{bluepy}, which provides an interface for the same functionalities and allows constructing more complex programs.
 
-They all provide similar functions and the choice is really up to the user. In this case of study, the main objective was to scan the surroundings for BLE and BT devices and to connect to them and gather more informations about their services and characteristics.
+In conclusion, they all provide similar functions and the user can choose depending on her specific requirements and targets. In this project, the main objective was to scan the surroundings for BLE and BT devices, connecting to them and gathering information about their services and characteristics.
 
-Following, are the command lines to scan and connect to the devices.
+Following are the command lines to scan and connect to the devices.
+\lstinputlisting[caption={Connect to device via \texttt{hcitool}.},label={list:conn-hcitool},language=bash]{lescan-connect.txt}
+\lstinputlisting[caption={Connect to device via \texttt{bluetoothctl}.},label={list:conn-bluetoothctl},language=bash]{bluetoothctl-connect.txt}
+\lstinputlisting[caption={Connect to device via \texttt{gatttool}.},label={list:conn-gatttool},language=bash]{gatttool_connect.txt}
 
-\lstinputlisting{lescan-connect.txt}
-\lstinputlisting{bluetoothctl-connect.txt}
-\lstinputlisting{gatttool-connect.txt}
+We chose to use \texttt{gatttool} due to its efficiency in displaying the characteristics and services of the target device. Consequently, we will only consider this tool in further project developments and code excerpts.
 
-Our choice on which tool to use, fell on Gatttool, simply due to its efficiency in displaying the characteristics and services of a certain device. That is why in the following explanation only Gatttool will be taken into account.
-Through some simple commands, once the connection has been achieved, it is possible to explore the characteristics (all of them or only the primary ones) of the device.
+A connection can be established simply via the \texttt{connect} keyword; afterwards it is possible to explore the characteristics (all of them or only the primary ones) of the device. We have reported the output of the connection process, together with an example of primary services for the smart bulb (see Appendix \ref{appendixB}). However, as the code shows, it is impossible to understand the meaning and purpose of each characteristic, and no support is provided by the Bluetooth GATT Services table.
 
-\lstinputlisting{gatttool-characteristics.txt}
-
-However, as the code shows, it is impossible to understand the meaning and purpose of each characteristics, and in this case, even the Bluetooth GATT Services table does not provide much support.
-
-Another way to connect to the device may be through a BLE sniffer app, like BLEScanner or nRFConnect.
-Turn the Bluetooth on, and in the main page connectible devices appear: the user can then easily open another tab and explore the content more deeply.
+We tested also an alternative way to connect to the smart bulb, employing an Android app as BLEScanner or nRFConnect. To proceed with this approach, turn the Bluetooth on, and in the main page connectible devices will appear: the user can then easily open another tab and explore the content more deeply.
 
 \begin{figure}
 	\centering
-		\includegraphics[width=0.9\textwidth]{0.5\textwidth}
-	\label{fig:images\nrfConnect}
+		\includegraphics[width=0.9\textwidth]{nrfConnect.jpg}
+		\caption{Screenshots from the nRFConnect Android app when connecting to the smart bulb.}
+	\label{fig:nrfConnect}
 \end{figure}	
 
-Although all the services appear as unknown and it is not clear the meaning of the values, the structure of the device profile, including characteristics, services and descriptors is apparent.
-At this point it is understandable that only knowing the characteristics and services of a device is not sufficient to understand what the data sent from the phone to the smart bulb is. There is a tool in every smart phone (from Android 4.0 onwards) that allow users to capture all Bluetooth HCI packets in a file, called HCI snoop log, and it is accessible from the Developer Option section in the system Settings. It is important to take into account that this section is not usually available and it has to be activated direclty from the user.
+Although all the services are labelled as \textit{unknown} and it is not clear what their values mean, the structure of the device profile, including characteristics, services and descriptors is apparent.
+It becomes now clear that knowledge of the characteristics and services of a device is not sufficient to understand the meaning of the exchanged data. We thus moved to a different approach: reverse-engineering of the packet structure and content, so to finally understand its meaning. Unfortunately, as previously mentioned, due to the lack of a sniffing device (e.g. a dongle) we decided to use a "legit" way to capture some traffic packets. From Android 4.0 onward, Developer Tools provide the user with a tool to capture all Bluetooth HCI packets in a file, called \texttt{HCI snoop log}. It is important to highlight that this section is not usually available and it has to be activated directly from the user.
 
-The next step is to connect to the MagicBlue app and select the smart bulb. From here it is possible to choose from a range of colours and modes, modify the brightness and the interval of time between the lights, as well as enable the microphone sensitivity or play music from the phone and light up the bulb according to it.
-By doing these operations, the phone sends to the bulb data packets containing the command requests for the bulb, and  all this information is recorded in a snoop log file.
-After transferring the file from the phone to a PC, Wireshark is the instrument needed to read from the log file.
+In the next step we connect to the MagicBlue app and select the smart bulb from the list of available devices. After pairing, it is possible to choose from a wide range of colours and modes, to modify the brightness and a blinking time interval, as well as to enable the microphone sensitivity or play music from the smart phone and light up the bulb accordingly. Any of these operations requires the phone to send the bulb data packets containing the command requests for the selected function, and all this information is recorded in a snoop log file.
+After transferring the file from the phone to a PC, Wireshark is the instrument needed to parse the log file.
 
-\subsection {Filtering}
-One of the obstacles in understanding the structure of data packets exchanged between two BLE devices is finding the packets of interest. The amount of data gathered in the log file is indeed impressive, but many of the packets are related to the connection phase between the two entities and  in this case they hold no value for our research.
-It is thus advisable to use as a filter(there is a specific bar in Wireshark to do this) on the Bluetooth address of the device, acquired during the initial scanning phase.
-
-After this step, only the packets sent from and to the smart bulb remain. Wireshark provides a complete description of the packets and, while at the beginning it may seem impossible to decipher the values of the data exchanged, it is then quite easy to spot recurring similarities.
+\subsection {Traffic Analysis}
+One of the obstacles in understanding the structure of data packets exchanged between two BLE devices lies in finding the packets of interest. The amount of data gathered in the log file is indeed impressive, but many of the packets are related to the connection phase between the two entities and so they hold no value for our research.
+It is thus advisable to filter on the Bluetooth address of the target device, acquired during the initial scanning phase. Wireshark allows selecting it either via its specific toolbar or via right click, once a meaningful packet has been found. We then proceed to analyse the structure of the remaining packets, leveraging on Wireshark parser, which helps in detecting recurring similarities. We can now understand how the colour information is encoded inside the data structure.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.9\textwidth]{wireshark1}
-	\label{fig:images\wireshark1}
+	\includegraphics[width=0.9\textwidth]{wireshark1.png}
+	\caption{Applying a filter in Wireshark and observing packets contents.}
+	\label{fig:wireshark}
 \end{figure}
 
-Through data packets analysis, patterns are recognized and it becomes easy to guess the combination for colour changes and different modes. Following, a partial and brief summary of what we were able to gather from Wireshark log.
-
+We summarized our findings in the following key considerations.
 \begin{itemize}
-	\item Value length is not fixed, up to a maximum of 20 bytes, depending on the information it stores.
+	\item Within the Attribute Protocol, \texttt{Value} length can be up to a maximum of 20 bytes, depending on the information it transmits.
 	\item Writeable Characteristics are usually marked with a ffe9-XX UUID, referring to a ffe5-XX Service.
-	\item There are no security layers and it is possible to write values as one wishes.
-	\item It is extremely easy to do so either through a terminal using Gatttool or Bluetoothctl specific commands, or through a BLE sniffer app.
-\end{itemize}
--------> DEVO METTERE LE IMMAGINI ANCHE QUI??
-
-Following, the patterns we were able to recognize from the smart bulb MagicBlue.
-
-\textit{Single colour choice example}
-\begin{itemize}
-	\item 56: fixed prefix.
-	\item ff085a: colour RGB code.
-	\item 00: from 00 to ff, brightness of the light.
-	\item 0f: or f0, off/on.
-	\item aa: fixed suffix.
+	\item There are no security layers and it is possible to write any value.
+	\item This can be easily accomplished via \texttt{gatttool} or \texttt{bluetoothctl} on the command line, or using a BLE sniffer smart phone app.
 \end{itemize}
 
-\textit{Light Functions example}
-\begin{itemize}
-	\item bb: fixed prefix.
-	\item 3: or 2, respectively for "strobo" or "gradual change"
-	\item 0: from 0 to c, 7 colours mode, red, green, .. , white mode.
-	\item 1: on-time of the light (1 is a flash, f lights up the led for 5 seconds).
-	\item f: interval of time between flashes (1 faster than f).
-	\item 44: fixed suffix.
+In tables \ref{tab:colour-blebulb} and \ref{tab:light-blebulb} we provide a short summary of the patterns recognized in Magic Blue smart bulb traffic. The bulb has indeed many more functionalities than the ones reported here, which we did not further investigate.
+
+\begin{minipage}{\linewidth}
+	\centering
+	\captionof{table}{Single colour choice} \label{tab:colour-blebulb}
+	\begin{tabular}{l l} 
+	\hline
+	Hex value &	Meaning  \\ \hline
+	56 &	Fixed prefix  \\ 
+	ff085a &	Colour RGB code \\ 
+	00 &	From 00 to ff, brightness of the light \\ 
+	0f OR f0 &	off/on \\ 
+	aa & Fixed suffix  \\ 
+\end {tabular}\par
+\bigskip
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+	\centering
+	\captionof{table}{Light Functions} \label{tab:light-blebulb}
+	\begin{tabular}{l l} 
+	\hline
+	Hex value &	Meaning  \\ \hline
+	bb &	Fixed prefix  \\ 
+	3 OR 2 &	Respectively active functions \textit{strobo} or \textit{gradual change} \\ 
+	0 &	From 00 to ff, brightness of the light \\ 
+	1 &	On-time of the lightbulb, from a quick flash (1) to 5 seconds \\ 
+	f & Interval of time between flashes (1 faster than f)  \\ 
+	44 & Fixed suffix  \\
+\end {tabular}\par
+\bigskip
+\end{minipage}
 	
-There are also other functions and modes but the deciphering of the packets is indeed quite strenuous. 
-Hacking a smart bulb may be also accomplished by writing a Python script and compile it on a Raspberry device or other devices that support an operative system. It is in fact needed to install Bluez components, in addition to a code compiler.
-This way, controlling the device remotely and in a continued way would be possible.
-There is a full Python Compiler called MicroPython for STM Microcontrollers but it did not provide compatibility for the board we used in this project.
-The list of supported boards is available from the official site.
+Hacking a smart bulb may be also accomplished by a Python script compiled for a Raspberry Pi device. There is a single requirement on the operating system of the component, as it is needed to install Bluez components as well as a compiler. This solution would allow controlling the device remotely in a continuous way. Moreover, there exists a full Python Compiler called MicroPython for ST Microelectronics, though not compatible with the board used in this project. The list of supported boards is available from the official site.
 	
-\section{STM Iot Node advertising test}
- 
-For this experiment, we used the STM IoT node and tested it on both our Linux distributions. The board retrieves the temperature and humidity levels in the environment and broadcasts them as a non-connectable advertising packet, as we can see in Listing \ref{list:adv-temp-hum}.
+\section{Case Study: STM IoT Node} 
+For this experiment we used the STM IoT node and tested it on both Linux distributions. The board retrieves the temperature and humidity levels in the environment and broadcasts them as a non-connectable advertising packet, as we can see in Listing \ref{list:adv-temp-hum}.
 \lstinputlisting[caption={Retrieve sensor values and update packet},label={list:adv-temp-hum},language=c++]{example-temphum.cpp}
 
 Packets broadcasted by the board can be retrieved with any of the tools described at the end of the previous chapter. We analysed the payload and found that it follows this structure:

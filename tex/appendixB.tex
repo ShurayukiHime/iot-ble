@@ -1,13 +1,20 @@
-\chapter{Java Pairing Based Cryptography Library}
+\chapter{Smart Bulb Services and Characteristics}
 \label{appendixB}
 \thispagestyle{empty}
 
-\noindent Here are reported the complete classes from \cite{ISCC:DecIov11}, mentioned in chapter \ref{chapter3}.
+\newenvironment{changemargin}[2]{%
+	\begin{list}{}{%
+			\setlength{\topsep}{0pt}%
+			\setlength{\leftmargin}{#1}%
+			\setlength{\rightmargin}{#2}%
+			\setlength{\listparindent}{\parindent}%
+			\setlength{\itemindent}{\parindent}%
+			\setlength{\parsep}{\parskip}%
+		}%
+		\item[]}
+	{\end{list}
+}
 
-In this class we have a \texttt{main} function to show a sample usage of IBE cryptography.
-\lstinputlisting[caption={AHIBEDIP10.class},language=java]{AHIBEDIP10-complete.java}
-	
-This class shows which methods are called when encrypting and decrypting.
-\lstinputlisting[caption={PairingKeyEncapsulationMechanism.class},language=java]{PairingKeyEncapsulationMechanism-complete.java}
-
-\lstinputlisting[caption={Excerpt from PairingAsymmetricBlockCipher class},label={PairingAsymmetricBlockCipher},language=java]{PairingAsymmetricBlockCipher-complete.java}
+\begin{changemargin}{-1cm}{-1cm}
+\lstinputlisting[caption={Smart bulb Primary Characteristics and Services.},label={list:char-serv-gatttool},language=bash]{gatttool-characteristics.txt}
+\end{changemargin}
