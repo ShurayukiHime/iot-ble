@@ -28,13 +28,13 @@ Man-In-The-Middle frameworks such as Btlejuice or Gattacker are also an example 
 BLE devices implement the key management and security manager on host instead of controller and all the key generation and distribution falls under its responsibility.
 This approach is introduced by the Bluetooth Specification and helps the host to be flexible and reduces the cost and complexity of the controller.
 The Security Manager defines the authentication, the pairing and encryption between the BLE devices and it uses the services provided by the L2CAP layer to manage all these functions.
-
+\iffalse
 \begin{figure}
 	\centering	
 	\includegraphics[width=0.5\textwidth]{architecture.gif}
 	\label{fig:architecture}
 \end{figure}
-
+\fi
 Security for BLE devices is expressed in LE Security Mode and may vary in a range from 1 to 4.
 Each service and device may have a different security requirement.
 \begin{itemize}

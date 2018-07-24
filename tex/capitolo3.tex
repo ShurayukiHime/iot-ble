@@ -61,7 +61,7 @@ We summarized our findings in the following key considerations.
 
 In tables \ref{tab:colour-blebulb} and \ref{tab:light-blebulb} we provide a short summary of the patterns recognized in Magic Blue smart bulb traffic. The bulb has indeed many more functionalities than the ones reported here, which we did not further investigate.
 
-\begin{minipage}{\linewidth}
+\begin{minipage}{0.9\linewidth}
 	\centering
 	\captionof{table}{Single colour choice} \label{tab:colour-blebulb}
 	\begin{tabular}{l l} 
@@ -102,6 +102,6 @@ Packets broadcasted by the board can be retrieved with any of the tools describe
 \begin{center}
 	\textit{length - meaning - content}.
 \end{center}
-The length is expressed in bytes and it refers to the overall size of \textit{meaning} and \textit{content}. The former two is a label which has to be matched with the corresponding Bluetooth GAP Assigned Number (specification available on the website, we report the table in Appendix \ref{appendixA}) to understand its meaning. Common examples are \texttt{0x09} for "Complete Local Name" or \texttt{0x0a} for "Power Level". In our case, the label corresponds to "Service data 16-bit UUID", which means that we should look at the next two bytes to have a more precise indication of the received data. Vendors usually publish a web page in which they list all their codes with the respective meaning, while in this example we can see that its value is added to the payload in \texttt{service\_data[0]}, and corresponds to \texttt{00 aa}.
+The length is expressed in bytes and it refers to the overall size of \textit{meaning} and \textit{content}. The former two is a label which has to be matched with the corresponding Bluetooth GAP Assigned Number (specification available on the website \cite{bt-GAP-numbers}, we report the table in Appendix \ref{appendixA}) to understand its meaning. Common examples are \texttt{0x09} for "Complete Local Name" or \texttt{0x0a} for "Power Level". In our case, the label corresponds to "Service data 16-bit UUID", which means that we should look at the next two bytes to have a more precise indication of the received data. Vendors usually publish a web page in which they list all their codes with the respective meaning, while in this example we can see that its value is added to the payload in \texttt{service\_data[0]}, and corresponds to \texttt{00 aa}.
 
 Finally, the next two bytes encode the temperature and humidity in the room.
