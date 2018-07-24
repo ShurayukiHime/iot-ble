@@ -53,4 +53,7 @@ Each service and device may have a different security requirement.
 	\item Secure Connection Only: Authenticated connection and pairing with encryption. Devices accept only outgoing and incoming connections for services that use security mode Level 4.
 \end{itemize}
 
+In general however BLE devices are usually weakly protected: very few devices use encryption but they do not require it (even the failed pairing is fine), and almost all devices are not strongly authenticated by mobile applications.
+In addition to this BD address is often the only check needed to ensure authenticity. On the other side, as we will explain in the next chapter, attacks like sniffing and MITM are more difficult to accomplish than it seems.
+
 
