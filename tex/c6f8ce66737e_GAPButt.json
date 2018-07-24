@@ -1,0 +1,15 @@
+{
+    "id": "c6f8ce66737e",
+    "eir": "020106070300aa00a009180319010309094741504275747400",
+    "scanResponse": null,
+    "decodedNonEditable": {
+        "localName": "GAPButt\u0000",
+        "manufacturerDataHex": null,
+        "manufacturerDataAscii": null,
+        "serviceUuids": [
+            "aa00",
+            "a000",
+            "1809"
+        ]
+    }
+}

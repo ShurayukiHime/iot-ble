@@ -49,7 +49,7 @@ Once operating, the two platforms run in parallel in order to clone the device a
 There is a strict sequences of steps to follow in order to perform the attacks, and inaccurate executions may lead up to unsuccessful attempts. Particular care must be put also towards the target device, which must not be paired at the moment of the attack. This is necessary as it will be advertising its characteristics and services on the main channel: in the first steps, the master device simply listens to advertisement packets and creates an internal structure of \texttt{json} documents to describe it accurately; later, this same structure will be used to clone the device and trick the user into connecting with it. In Listing \ref{list:gattacker} we can see the commands which summarize this procedure.
 \lstinputlisting[caption={\texttt{gattacker}'s initial commands to start a MITM attack},label={list:gattacker},language=bash]{GATTacker-cmd.sh}
 
-We tested this tool in two different settings: the first time, we tried to perform an attack on the Magic Blue smart bulb, while the second time we flashed a program on the STM IoT node and performed the attack on that.
+We tested this tool in two different settings: the first time, we tried to perform an attack on the Magic Blue smart bulb, while the second time we flashed a program on the STM IoT node and performed the attack on that. We reported our findings, limited to the STM board, in Appendix \ref{appendixC}.
 
 Gattacker has a support to replay actions: they can be stored in log files and then replayed when necessary, also from the BLESniffer mobile app.
 

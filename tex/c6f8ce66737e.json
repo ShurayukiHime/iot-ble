@@ -1,0 +1,68 @@
+[
+    {
+        "uuid": "1801",
+        "name": "Generic Attribute",
+        "type": "org.bluetooth.service.generic_attribute",
+        "startHandle": 1,
+        "endHandle": 4,
+        "characteristics": [
+            {
+                "uuid": "2a05",
+                "name": "Service Changed",
+                "properties": [
+                    "indicate"
+                ],
+                "value": "",
+                "descriptors": [
+                    {
+                        "handle": 4,
+                        "uuid": "2902",
+                        "value": ""
+                    }
+                ],
+                "startHandle": 2,
+                "valueHandle": 3
+            }
+        ]
+    },
+    {
+        "uuid": "1809",
+        "name": "Health Thermometer",
+        "type": "org.bluetooth.service.health_thermometer",
+        "startHandle": 15,
+        "endHandle": 20,
+        "characteristics": [
+            {
+                "uuid": "2a1c",
+                "name": "Temperature Measurement",
+                "properties": [
+                    "read",
+                    "notify"
+                ],
+                "value": "00280a00fe",
+                "descriptors": [
+                    {
+                        "handle": 18,
+                        "uuid": "2902",
+                        "value": ""
+                    }
+                ],
+                "startHandle": 16,
+                "valueHandle": 17,
+                "asciiValue": " (   "
+            },
+            {
+                "uuid": "2a1d",
+                "name": "Temperature Type",
+                "properties": [
+                    "read"
+                ],
+                "value": "03",
+                "descriptors": [],
+                "startHandle": 19,
+                "valueHandle": 20,
+                "asciiValue": " "
+            }
+        ]
+    }
+]
